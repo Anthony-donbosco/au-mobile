@@ -10,6 +10,7 @@ import { useDarkMode } from './src/hooks/useDarkMode';
 import { globalStyles } from './src/styles/globalStyles';
 import { checkNetworkConnection } from './src/utils/networkUtils';
 
+
 const queryClient = new QueryClient();
 
 export default function App() {

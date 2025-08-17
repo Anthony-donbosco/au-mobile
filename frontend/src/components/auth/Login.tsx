@@ -7,7 +7,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import { LoginProps, CredencialesLogin } from '@/types';
+import { LoginProps, CredencialesLogin } from '../../types';
 
 const Login: React.FC<LoginProps> = ({ onSubmit, loading, isDarkMode }) => {
   const [email, setEmail] = useState('');

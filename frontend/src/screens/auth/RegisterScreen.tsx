@@ -11,19 +11,15 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from '../../hooks/useDarkMode';
 import Registro from '../../components/auth/Registro';
 import { AuthButton } from '../../components/auth/AuthButton';
-import { DatosRegistro } from '@/types';
+import { DatosRegistro, Usuario, RegisterScreenProps } from '@/types';
 
 const { width, height } = Dimensions.get('window');
 
-interface Props {
-  navigation: any;
-  onRegister: (usuario: any) => void;
-}
-
-export const RegisterScreen: React.FC<Props> = ({ navigation, onRegister }) => {
+export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRegister }) => {
   const [isDarkMode] = useDarkMode();
   const [cargando, setCargando] = useState(false);
 
@@ -49,12 +45,17 @@ export const RegisterScreen: React.FC<Props> = ({ navigation, onRegister }) => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Simular respuesta exitosa
-      const usuarioRegistrado = {
+      const usuarioRegistrado: Usuario = {
         id: Date.now().toString(),
         nombre: datosRegistro.nombre,
         email: datosRegistro.email,
-        tipoUsuario: datosRegistro.tipoUsuario || 'usuario'
+        tipoUsuario: datosRegistro.tipoUsuario || 'usuario',
+        tipo_usuario: 4 // Default usuario normal
       };
+      
+      // Guardar en AsyncStorage
+      await AsyncStorage.setItem('token', 'fake-jwt-token');
+      await AsyncStorage.setItem('usuario', JSON.stringify(usuarioRegistrado));
       
       Alert.alert(
         'Registro exitoso',

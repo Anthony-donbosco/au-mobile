@@ -11,19 +11,15 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from '../../hooks/useDarkMode';
 import Login from '../../components/auth/Login';
 import { AuthButton } from '../../components/auth/AuthButton';
-import { CredencialesLogin } from '@/types';
+import { CredencialesLogin, Usuario, LoginScreenProps } from '@/types';
 
 const { width, height } = Dimensions.get('window');
 
-interface Props {
-  navigation: any;
-  onLogin: (usuario: any) => void;
-}
-
-export const LoginScreen: React.FC<Props> = ({ navigation, onLogin }) => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin }) => {
   const [isDarkMode] = useDarkMode();
   const [cargando, setCargando] = useState(false);
 
@@ -38,14 +34,18 @@ export const LoginScreen: React.FC<Props> = ({ navigation, onLogin }) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Simular respuesta exitosa
-      const usuarioSimulado = {
+      const usuarioSimulado: Usuario = {
         id: '1',
         nombre: 'Usuario Prueba',
         email: credenciales.email,
-        tipoUsuario: 'usuario' // Cambiar según la lógica de roles
+        tipoUsuario: 'usuario',
+        tipo_usuario: 4 // Default usuario normal
       };
       
-      // Guardar en AsyncStorage se hace en el componente padre
+      // Guardar en AsyncStorage
+      await AsyncStorage.setItem('token', 'fake-jwt-token');
+      await AsyncStorage.setItem('usuario', JSON.stringify(usuarioSimulado));
+      
       onLogin(usuarioSimulado);
       
     } catch (error) {

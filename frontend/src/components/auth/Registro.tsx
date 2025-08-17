@@ -7,7 +7,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import { RegistroProps, DatosRegistro } from '@/types';
+import { RegistroProps, DatosRegistro } from '../../types';
 
 const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) => {
   const [nombre, setNombre] = useState('');

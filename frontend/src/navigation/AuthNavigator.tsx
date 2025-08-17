@@ -1,11 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from '../components/auth/Login';
-import Registro from '../components/auth/Registro';
+import { LoginScreen } from '../screens/auth/LoginScreen';
+import { RegisterScreen } from '../screens/auth/RegisterScreen';
 
 export type AuthStackParamList = {
   Login: undefined;
-  Registro: undefined;
+  Register: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -29,19 +29,23 @@ const AuthNavigator: React.FC<AuthNavigatorProps> = ({
     >
       <Stack.Screen name="Login">
         {(props) => (
-          <Login 
+          <LoginScreen 
             {...props} 
-            onAuthChange={onAuthChange}
-            onRoleChange={onRoleChange}
+            onLogin={(usuario) => {
+              onRoleChange(usuario.tipo_usuario || 4);
+              onAuthChange(true);
+            }}
           />
         )}
       </Stack.Screen>
-      <Stack.Screen name="Registro">
+      <Stack.Screen name="Register">
         {(props) => (
-          <Registro 
+          <RegisterScreen 
             {...props} 
-            onAuthChange={onAuthChange}
-            onRoleChange={onRoleChange}
+            onRegister={(usuario) => {
+              onRoleChange(usuario.tipo_usuario || 4);
+              onAuthChange(true);
+            }}
           />
         )}
       </Stack.Screen>

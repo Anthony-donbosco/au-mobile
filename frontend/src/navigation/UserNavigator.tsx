@@ -6,7 +6,6 @@ import { useResponsive } from '../hooks/useResponsive';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { colors } from '../styles/colors';
 
-
 // Componentes
 import Dashboard from '../components/user/Dashboard';
 import Transacciones from '../components/user/Transacciones';
@@ -14,8 +13,8 @@ import Ingresos from '../components/user/Ingresos';
 import Gastos from '../components/user/Gastos';
 import Facturas from '../components/user/Facturas';
 import Objetivos from '../components/user/Objetivos';
-import {Configuracion} from '../components/user/Configuracion';
-import {Perfil} from '../components/user/Perfil';
+import { Configuracion } from '../components/user/Configuracion';
+import { Perfil } from '../components/user/Perfil';
 
 export type UserTabParamList = {
   Dashboard: undefined;
