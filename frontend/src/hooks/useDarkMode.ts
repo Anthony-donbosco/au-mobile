@@ -31,7 +31,7 @@ export const useDarkMode = () => {
     }
   };
 
-  const toggleDarkMode = async () => {
+  const toggleTheme = async () => {
     try {
       const newMode = !isDarkMode;
       setIsDarkMode(newMode);
@@ -41,5 +41,5 @@ export const useDarkMode = () => {
     }
   };
 
-  return [isDarkMode, toggleDarkMode] as const;
+  return [isDarkMode, toggleTheme] as const;
 };

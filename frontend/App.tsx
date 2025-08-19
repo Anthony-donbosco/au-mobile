@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import './src/i18n/i18n';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider } from './src/contexts/ThemeContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { useDarkMode } from './src/hooks/useDarkMode';
 import { globalStyles } from './src/styles/globalStyles';
@@ -57,6 +59,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
           <StatusBar style={isDarkMode ? 'light' : 'dark'} />
@@ -68,6 +71,7 @@ export default function App() {
           />
         </NavigationContainer>
       </QueryClientProvider>
+          </ThemeProvider>
     </SafeAreaProvider>
   );
 }

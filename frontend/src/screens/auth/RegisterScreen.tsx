@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useTheme } from '../../contexts/ThemeContext';
 import Registro from '../../components/auth/Registro';
 import { AuthButton } from '../../components/auth/AuthButton';
 import { DatosRegistro, Usuario, RegisterScreenProps } from '@/types';
@@ -20,7 +20,7 @@ import { DatosRegistro, Usuario, RegisterScreenProps } from '@/types';
 const { width, height } = Dimensions.get('window');
 
 export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRegister }) => {
-  const [isDarkMode] = useDarkMode();
+  const { isDarkMode, toggleTheme } = useTheme();
   const [cargando, setCargando] = useState(false);
 
   const manejarRegistro = async (datosRegistro: DatosRegistro) => {

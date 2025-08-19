@@ -1,0 +1,36 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "navigation": {
+    "dashboard": "Inicio",
+    "transactions": "Transacciones",
+    "income": "Ingresos",
+    "expenses": "Gastos",
+    "bills": "Facturas",
+    "goals": "Objetivos",
+    "settings": "Configuración",
+    "profile": "Perfil"
+  },
+  "dashboard": {
+    "welcomeBack": "Bienvenido de vuelta",
+    "totalBalance": "Balance Total",
+    "recentTransactions": "Transacciones Recientes",
+    "myGoal": "Mi Objetivo",
+    "completed": "completado"
+  },
+  "settings": {
+    "title": "Configuración",
+    "general": "General",
+    "appearance": "Apariencia",
+    "language": "Idioma",
+    "security": "Seguridad y Privacidad"
+  }
+}

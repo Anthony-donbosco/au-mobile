@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { useResponsive } from '../hooks/useResponsive';
-import { useDarkMode } from '../hooks/useDarkMode';
+import { useTheme } from '../contexts/ThemeContext';
 import { colors } from '../styles/colors';
 
 // Componentes
@@ -40,7 +40,7 @@ const MainTabNavigator: React.FC<UserNavigatorProps> = ({
   onRoleChange,
 }) => {
   const { isTablet } = useResponsive();
-  const [isDarkMode] = useDarkMode();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   return (
     <Tab.Navigator

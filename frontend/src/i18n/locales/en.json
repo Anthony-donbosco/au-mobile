@@ -1,0 +1,36 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "transactions": "Transactions",
+    "income": "Income",
+    "expenses": "Expenses",
+    "bills": "Bills",
+    "goals": "Goals",
+    "settings": "Settings",
+    "profile": "Profile"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back",
+    "totalBalance": "Total Balance",
+    "recentTransactions": "Recent Transactions",
+    "myGoal": "My Goal",
+    "completed": "completed"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "appearance": "Appearance",
+    "language": "Language",
+    "security": "Security & Privacy"
+  }
+}

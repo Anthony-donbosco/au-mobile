@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useTheme } from '../../contexts/ThemeContext';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import { RouteProp } from '@react-navigation/native';
@@ -42,7 +42,7 @@ interface ConfiguracionItem {
 }
 
 export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation, onAuthChange }) => {
-  const [ isDarkMode, toggleDarkMode ] = useDarkMode();
+  const { isDarkMode, toggleTheme } = useTheme();
   const [datosUsuario, setDatosUsuario] = useState<Usuario | null>(null);
   const [notificacionesEmail, setNotificacionesEmail] = useState(false);
   const [notificacionesPush, setNotificacionesPush] = useState(true);
@@ -161,7 +161,7 @@ export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation,
       tipo: 'toggle',
       icono: isDarkMode ? 'moon' : 'sunny',
       valor: isDarkMode,
-      onToggle: toggleDarkMode,
+      onToggle: toggleTheme,
     },
     {
       id: 'notifEmail',

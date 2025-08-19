@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useResponsive } from '../../hooks/useResponsive';
 import { globalStyles } from '../../styles/globalStyles';
 import { colors } from '../../styles/colors';
@@ -33,7 +33,7 @@ interface IngresosProps {
 }
 
 const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
-  const [isDarkMode, toggleDarkMode] = useDarkMode();
+  const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -174,7 +174,7 @@ const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
           </Text>
         </View>
         <TouchableOpacity
-          onPress={toggleDarkMode}
+          onPress={toggleTheme}
           style={styles.headerButton}
         >
           <Ionicons 

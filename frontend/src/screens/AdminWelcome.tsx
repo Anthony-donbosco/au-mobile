@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useDarkMode } from '../hooks/useDarkMode';
+import { useTheme } from '../contexts/ThemeContext';
 import { useResponsive } from '../hooks/useResponsive';
 import { globalStyles } from '../styles/globalStyles';
 import { colors } from '../styles/colors';
 import { authService } from '../services/auth';
 
 const AdminWelcome: React.FC = () => {
-  const [isDarkMode, toggleDarkMode] = useDarkMode();
+  const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
 
   const handleLogout = async () => {
@@ -31,7 +31,7 @@ const AdminWelcome: React.FC = () => {
           AUREUM
         </Text>
         <TouchableOpacity
-          onPress={toggleDarkMode}
+          onPress={toggleTheme}
           style={styles.darkModeButton}
         >
           <Ionicons 

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useTheme } from '../../contexts/ThemeContext';
 import Login from '../../components/auth/Login';
 import { AuthButton } from '../../components/auth/AuthButton';
 import { CredencialesLogin, Usuario, LoginScreenProps } from '@/types';
@@ -20,7 +20,7 @@ import { CredencialesLogin, Usuario, LoginScreenProps } from '@/types';
 const { width, height } = Dimensions.get('window');
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin }) => {
-  const [isDarkMode] = useDarkMode();
+  const { isDarkMode, toggleTheme } = useTheme();
   const [cargando, setCargando] = useState(false);
 
   const manejarLogin = async (credenciales: CredencialesLogin) => {

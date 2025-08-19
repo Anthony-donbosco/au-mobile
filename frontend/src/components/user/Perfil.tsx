@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDarkMode } from '../../hooks/useDarkMode';
+import { useTheme } from '../../contexts/ThemeContext';
 import { RouteProp } from '@react-navigation/native';
 import { UserTabParamList } from '@/navigation/UserNavigator'; // Adjust path as needed
 
@@ -45,7 +45,7 @@ interface CampoFormulario {
 }
 
 export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange }) => {
-  const [ isDarkMode ] = useDarkMode();
+  const { isDarkMode, toggleTheme } = useTheme();
   
   const [datosUsuario, setDatosUsuario] = useState<DatosUsuario>({
     id: '',
