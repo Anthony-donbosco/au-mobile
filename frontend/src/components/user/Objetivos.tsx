@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -77,6 +78,7 @@ const CircularProgress: React.FC<{
 };
 
 const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
   const [loading, setLoading] = useState(true);
@@ -165,13 +167,13 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
 
   const handleAddObjetivo = () => {
     if (!nuevoObjetivo.nombre || !nuevoObjetivo.metaTotal || !nuevoObjetivo.fechaLimite) {
-      Alert.alert('Error', 'Por favor completa todos los campos obligatorios');
+      Alert.alert(t("common.error"), t("common.fillAllFields"));
       return;
     }
 
     const metaTotal = parseFloat(nuevoObjetivo.metaTotal);
     if (isNaN(metaTotal) || metaTotal <= 0) {
-      Alert.alert('Error', 'La meta debe ser un número válido mayor a 0');
+      Alert.alert(t("common.error"), t("common.amountInvalid"));
       return;
     }
 
@@ -196,7 +198,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
       categoria: 'Viaje' 
     });
     setShowAddModal(false);
-    Alert.alert('Éxito', 'Objetivo creado correctamente');
+    Alert.alert(t("common.success"), t("goals.created"));
   };
 
   const handleAddMoney = (objetivoId: number, cantidad: number) => {
@@ -251,7 +253,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={[styles.loadingText, isDarkMode && styles.darkText]}>
-            Cargando objetivos...
+            {t("goals.loading")}
           </Text>
         </View>
       </SafeAreaView>
@@ -268,7 +270,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
             isDarkMode && styles.darkText,
             { fontSize: isTablet ? 24 : 20 }
           ]}>
-            Mis Objetivos Financieros
+            {t("goals.title")}
           </Text>
           <Text style={[styles.headerDate, isDarkMode && styles.darkTextSecondary]}>
             {formatDate(new Date())}
@@ -313,7 +315,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
           { marginHorizontal: wp(4), marginTop: hp(2) }
         ]}>
           <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
-            Progreso General
+            {t("goals.overallProgress")}
           </Text>
           
           <View style={styles.resumenContent}>
@@ -323,7 +325,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
                   {formatCurrency(totalAhorrado)}
                 </Text>
                 <Text style={[styles.statLabel, isDarkMode && styles.darkTextSecondary]}>
-                  Total Ahorrado
+                  {t("goals.totalSaved")}
                 </Text>
               </View>
               
@@ -332,7 +334,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
                   {formatCurrency(totalMetas)}
                 </Text>
                 <Text style={[styles.statLabel, isDarkMode && styles.darkTextSecondary]}>
-                  Total Metas
+                  {t("goals.totalTargets")}
                 </Text>
               </View>
               
@@ -341,7 +343,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
                   {objetivos.length}
                 </Text>
                 <Text style={[styles.statLabel, isDarkMode && styles.darkTextSecondary]}>
-                  Objetivos Activos
+                  {t("goals.activeGoals")}
                 </Text>
               </View>
             </View>
@@ -363,7 +365,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
           { marginHorizontal: wp(4), marginTop: hp(2), marginBottom: hp(4) }
         ]}>
           <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
-            Objetivos por Prioridad
+            {t("goals.byPriority")}
           </Text>
 
           {objetivosPorPrioridad.length > 0 ? (

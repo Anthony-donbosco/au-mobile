@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -34,6 +35,7 @@ interface TransaccionesProps {
 }
 
 const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
   const [loading, setLoading] = useState(true);
@@ -178,7 +180,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={[styles.loadingText, isDarkMode && styles.darkText]}>
-            Cargando transacciones...
+            {t("tx.loading")}
           </Text>
         </View>
       </SafeAreaView>
@@ -195,7 +197,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
             isDarkMode && styles.darkText,
             { fontSize: isTablet ? 24 : 20 }
           ]}>
-            Historial de Transacciones
+            {t("tx.title")}
           </Text>
           <Text style={[styles.headerDate, isDarkMode && styles.darkTextSecondary]}>
             {formatDate(new Date())}
@@ -231,7 +233,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
           />
           <TextInput
             style={[styles.searchInput, isDarkMode && styles.darkSearchInput]}
-            placeholder="Buscar transacciones..."
+            placeholder={t("tx.searchPlaceholder")}
             placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
             value={terminoBusqueda}
             onChangeText={setTerminoBusqueda}
@@ -240,7 +242,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterTabs}>
-            {['todas', 'ingreso', 'gasto'].map((tipo) => (
+            {['all', 'income', 'expense'].map((tipo) => (
               <TouchableOpacity
                 key={tipo}
                 style={[
@@ -257,7 +259,9 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
                   isDarkMode && styles.darkText,
                   filtroTipo === tipo && styles.filterTabTextActive,
                 ]}>
-                  {tipo === 'todas' ? 'Todas' : tipo === 'ingreso' ? 'Ingresos' : 'Gastos'}
+                  {tipo === 'all' ? t("tx.filters.all")
+                                 : tipo === 'income' ? t("tx.filters.income")
+                                 : t("tx.filters.expense")}
                 </Text>
               </TouchableOpacity>
             ))}

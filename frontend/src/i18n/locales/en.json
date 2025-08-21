@@ -7,7 +7,20 @@
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "done": "Done",
+    "retry": "Retry",
+    "user": "User",
+    "fillAllFields": "Please fill in all required fields",
+    "amountInvalid": "Amount must be a valid number greater than 0",
+    "notAvailable": "Not available",
+    "saving": "Saving...",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "view": "View",
+    "close": "Close",
+    "confirm": "Confirm"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -20,17 +33,262 @@
     "profile": "Profile"
   },
   "dashboard": {
+    "loading": "Loading dashboard...",
     "welcomeBack": "Welcome back",
     "totalBalance": "Total Balance",
     "recentTransactions": "Recent Transactions",
     "myGoal": "My Goal",
-    "completed": "completed"
+    "completed": "completed",
+    "incomeWithPct": "Income (+{{pct}}%)",
+    "expenseWithPct": "Expenses (+{{pct}}%)",
+    "overview": "Overview",
+    "quickActions": "Quick Actions"
   },
+  "period": {
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "last3Months": "Last 3 Months",
+    "thisYear": "This Year",
+    "lastYear": "Last Year",
+    "custom": "Custom Period",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days"
+  },
+
+  "tx": {
+    "loading": "Loading transactions...",
+    "title": "Transaction History",
+    "searchPlaceholder": "Search transactions...",
+    "filters": {
+      "all": "All",
+      "income": "Income",
+      "expense": "Expenses"
+    }
+  },
+
+  "transactions": {
+    "loading": "Loading transactions...",
+    "title": "Transaction History",
+    "searchPlaceholder": "Search transactions...",
+    "filters": {
+      "all": "All",
+      "income": "Income",
+      "expense": "Expenses"
+    },
+    "amount": "Amount",
+    "category": "Category",
+    "date": "Date",
+    "description": "Description",
+    "type": "Type",
+    "noTransactions": "No transactions available",
+    "addNew": "New Transaction",
+
+    "created": "Transaction recorded successfully",
+    "empty": "No transactions to display",
+    "summary": {
+      "income": "Income",
+      "expense": "Expenses",
+      "balance": "Balance"
+    },
+    "modal": {
+      "title": "New Transaction",
+      "type": "Transaction Type",
+      "income": "Income",
+      "expense": "Expense",
+      "name": "Name *",
+      "namePlaceholder": "E.g: Monthly salary",
+      "category": "Category *",
+      "amount": "Amount *",
+      "description": "Description (optional)",
+      "descriptionPlaceholder": "Add a description..."
+    }
+  },
+
+  "bills": {
+    "loading": "Loading bills...",
+    "title": "Bill Management",
+    "searchPlaceholder": "Search bills...",
+    "filters": {
+      "all": "All",
+      "pending": "Pending",
+      "paid": "Paid",
+      "overdue": "Overdue"
+    },
+    "created": "Bill recorded successfully",
+    "updated": "Bill updated successfully",
+    "deleted": "Bill deleted successfully",
+    "dueDate": "Due Date",
+    "paymentDate": "Payment Date",
+    "vendor": "Vendor",
+    "status": "Status",
+    "addNew": "New Bill",
+    "markAsPaid": "Mark as Paid",
+    "noBills": "No bills registered"
+  },
+
+  "expenses": {
+    "loading": "Loading expense analysis...",
+    "title": "Expense Analysis",
+    "trend6m": "Expense Trend (Last 6 Months)",
+    "monthlyExpenses": "Monthly Expenses",
+    "expensesByCategory": "Expenses by Category",
+    "topCategories": "Top Categories",
+    "totalExpenses": "Total Expenses",
+    "averageDaily": "Daily Average",
+    "averageMonthly": "Monthly Average",
+    "created": "Expense recorded successfully",
+
+    "totalForPeriod": "Total Expenses - {{period}}",
+    "vsPrevMonth": "vs previous month",
+    "vsPrevious": "vs previous",
+    "seeMore": "See {{count}} more"
+  },
+
+  "income": {
+    "loading": "Loading income...",
+    "title": "Income Management",
+    "monthSummary": "Month Summary",
+    "history": "Income History",
+    "created": "Income recorded successfully",
+    "updated": "Income updated successfully",
+    "totalIncome": "Total Income",
+    "monthlyIncome": "Monthly Income",
+    "incomeBySource": "Income by Source",
+    "addNew": "New Income",
+    "source": "Source",
+    "noIncome": "No income recorded"
+  },
+
+  "goals": {
+    "loading": "Loading goals...",
+    "title": "My Financial Goals",
+    "overallProgress": "Overall Progress",
+    "totalSaved": "Total Saved",
+    "totalTargets": "Total Targets",
+    "activeGoals": "Active Goals",
+    "byPriority": "Goals by Priority",
+    "created": "Goal created successfully",
+    "updated": "Goal updated successfully",
+    "completed": "Goal completed",
+    "targetAmount": "Target Amount",
+    "currentAmount": "Current Amount",
+    "progress": "Progress",
+    "deadline": "Deadline",
+    "priority": "Priority",
+    "addNew": "New Goal",
+    "noGoals": "No goals defined",
+    "priorities": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    }
+  },
+
+  "profile": {
+    "title": "My Profile",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "user@example.com",
+    "username": "Username",
+    "usernamePlaceholder": "username",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+503 0000-0000",
+    "profilePicture": "Profile Picture",
+    "personalInfo": "Personal Information",
+    "accountSettings": "Account Settings",
+    "updated": "Profile updated successfully",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+
+    "loading": "Loading profile...",
+    "photoSection": {
+      "title": "Your profile photo",
+      "tapToChange": "Tap to change",
+      "changePhoto": "Change Photo",
+      "chooseOption": "Select an option",
+      "takePhoto": "Take Photo",
+      "fromGallery": "Gallery",
+      "permissionDenied": "Permission Denied",
+      "cameraPermissionNeeded": "Camera access is needed to take photos",
+      "galleryPermissionNeeded": "Gallery access is needed to select photos",
+      "openCameraError": "Could not open camera",
+      "openGalleryError": "Could not open gallery"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "saveChanges": "Save Changes"
+    },
+    "errors": {
+      "loadUser": "Could not load user data",
+      "updateProfile": "Could not update profile"
+    },
+    "infoNote": "Your personal information is protected and only you can view and modify it."
+  },
+
   "settings": {
     "title": "Settings",
     "general": "General",
     "appearance": "Appearance",
     "language": "Language",
-    "security": "Security & Privacy"
+    "security": "Security & Privacy",
+    "darkMode": "Dark Mode",
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "emailNotificationsDesc": "Receive important notifications by email",
+    "pushNotifications": "Push Notifications",
+    "pushNotificationsDesc": "Receive notifications on device",
+    "autoSync": "Auto Sync",
+    "autoSyncDesc": "Automatically sync data in the background",
+    "currency": "Currency",
+    "timezone": "Timezone",
+    "dateFormat": "Date Format",
+    "backup": "Data Backup",
+    "export": "Export Data",
+    "import": "Import Data"
+  },
+  "language": {
+    "selectLanguage": "Select Language",
+    "current": "Current",
+    "changeSuccess": "Language changed successfully",
+    "changeError": "Error changing language",
+    "automatic": "Automatic (System)",
+    "english": "English",
+    "spanish": "Español"
+  },
+  "categories": {
+    "food": "Food",
+    "transport": "Transportation",
+    "entertainment": "Entertainment",
+    "utilities": "Utilities",
+    "healthcare": "Healthcare",
+    "education": "Education",
+    "shopping": "Shopping",
+    "travel": "Travel",
+    "investment": "Investments",
+    "other": "Other"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email format",
+    "invalidPhone": "Invalid phone format",
+    "passwordMismatch": "Passwords do not match",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Cannot exceed {{max}} characters",
+    "invalidDate": "Invalid date",
+    "futureDate": "Date cannot be in the future"
+  },
+  "messages": {
+    "dataUpdated": "Data updated successfully",
+    "dataDeleted": "Data deleted successfully",
+    "operationFailed": "Operation could not be completed",
+    "noInternetConnection": "No internet connection",
+    "sessionExpired": "Session expired, please log in again",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "unsavedChanges": "You have unsaved changes. Do you want to continue?"
   }
 }

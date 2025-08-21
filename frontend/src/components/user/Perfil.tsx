@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -45,6 +46,7 @@ interface CampoFormulario {
 }
 
 export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   
   const [datosUsuario, setDatosUsuario] = useState<DatosUsuario>({
@@ -213,15 +215,15 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
   const camposFormulario: CampoFormulario[] = [
     {
       id: 'nombreCompleto',
-      label: 'Nombre Completo',
+      label: t("profile.fullName"),
       valor: datosUsuario.nombreCompleto,
-      placeholder: 'Ingresa tu nombre completo',
+      placeholder: t("profile.fullNamePlaceholder"),
       editable: true,
       tipo: 'texto',
     },
     {
       id: 'email',
-      label: 'Email',
+      label: t("profile.email"),
       valor: datosUsuario.email,
       placeholder: 'tu@email.com',
       editable: false, // El email generalmente no se puede cambiar
@@ -229,9 +231,9 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
     },
     {
       id: 'usuario',
-      label: 'Nombre de Usuario',
+      label: t("profile.phone"),
       valor: datosUsuario.usuario,
-      placeholder: 'nombredeusuario',
+      placeholder: t("profile.phonePlaceholder"),
       editable: true,
       tipo: 'texto',
     },
@@ -265,7 +267,7 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
         ) : (
           <View style={[styles.valorContainer, themeStyles.valorContainer]}>
             <Text style={[styles.valor, themeStyles.valor, !campo.editable && styles.valorNoEditable]}>
-              {campo.valor || 'No disponible'}
+              {campo.valor || t("common.notAvailable")}
             </Text>
             {!campo.editable && (
               <Ionicons 
@@ -295,15 +297,15 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
   return (
     <SafeAreaView style={[styles.container, themeStyles.container]}>
       <View style={[styles.header, themeStyles.header]}>
-        <Text style={[styles.headerTitle, themeStyles.headerTitle]}>Mi Perfil</Text>
+        <Text style={[styles.headerTitle, themeStyles.headerTitle]}>{t("profile.title")}</Text>
         <TouchableOpacity
           onPress={() => modoEdicion ? guardarDatosUsuario() : setModoEdicion(true)}
           disabled={guardando}
           style={[styles.actionButton, guardando && styles.actionButtonDisabled]}
         >
           <Text style={styles.actionButtonText}>
-            {guardando ? 'Guardando...' : modoEdicion ? 'Guardar' : 'Editar'}
-          </Text>
+             {guardando ? t("common.saving") : (modoEdicion ? t("common.save") : t("common.edit"))}
+           </Text>
         </TouchableOpacity>
       </View>
 

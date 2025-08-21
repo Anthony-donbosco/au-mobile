@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/components/user/Configuracion.tsx
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -7,20 +8,26 @@ import {
   Switch,
   TouchableOpacity,
   Alert,
-  Linking,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../../contexts/ThemeContext';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { UserTabParamList } from '@/navigation/UserNavigator';
 
-import { RouteProp } from '@react-navigation/native';
-import { UserTabParamList } from '@/navigation/UserNavigator'; // Adjust path as needed
+// Import funciones de idioma
+import {
+  getCurrentLanguageMode,
+  changeLanguage,
+} from '../../i18n/i18n';
 
 interface ConfiguracionProps {
   route: RouteProp<UserTabParamList, 'Configuracion'>;
-  navigation: any; // or proper navigation type
+  navigation: any;
   onAuthChange: (isAuth: boolean) => void;
 }
 
@@ -30,29 +37,73 @@ interface Usuario {
   email: string;
 }
 
-interface ConfiguracionItem {
-  id: string;
-  titulo: string;
-  descripcion?: string;
-  tipo: 'toggle' | 'navegacion' | 'accion';
-  icono: string;
-  valor?: boolean;
-  onPress?: () => void;
-  onToggle?: (valor: boolean) => void;
+type LanguageMode = 'en' | 'es' | 'auto';
+
+interface LanguageOption {
+  code: LanguageMode;
+  name: string;       // nombre en UI (en el idioma actual)
+  nativeName: string; // nombre nativo
+  flag: string;
 }
 
 export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation, onAuthChange }) => {
+  const { t, i18n } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
+  const nav = useNavigation();
+
   const [datosUsuario, setDatosUsuario] = useState<Usuario | null>(null);
   const [notificacionesEmail, setNotificacionesEmail] = useState(false);
   const [notificacionesPush, setNotificacionesPush] = useState(true);
   const [sincronizacionAutomatica, setSincronizacionAutomatica] = useState(true);
   const [cargando, setCargando] = useState(true);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [currentLanguageMode, setCurrentLanguageMode] = useState<LanguageMode>('auto');
+  const [languageLoading, setLanguageLoading] = useState(false);
+
+  // Actualiza el título del header al cambiar idioma
+  useEffect(() => {
+    navigation?.setOptions?.({ title: t('settings.title') });
+  }, [navigation, t, i18n.language]);
+
+  // Opciones de idioma (se recalculan al cambiar idioma)
+  const languageOptions: LanguageOption[] = useMemo(
+    () => [
+      {
+        code: 'auto',
+        name: t('language.automatic'),
+        nativeName: t('language.automatic'),
+        flag: '📱',
+      },
+      {
+        code: 'en',
+        name: t('language.english'),
+        nativeName: t('language.english'),
+        flag: '🇺🇸',
+      },
+      {
+        code: 'es',
+        name: t('language.spanish'),
+        nativeName: t('language.spanish'),
+        flag: '🇸🇻',
+      },
+    ],
+    [t, i18n.language]
+  );
 
   useEffect(() => {
     cargarDatosUsuario();
     cargarConfiguraciones();
+    loadCurrentLanguage();
   }, []);
+
+  const loadCurrentLanguage = async () => {
+    try {
+      const mode = await getCurrentLanguageMode();
+      setCurrentLanguageMode(mode);
+    } catch (error) {
+      console.error('Error loading language mode:', error);
+    }
+  };
 
   const cargarDatosUsuario = async () => {
     try {
@@ -104,182 +155,106 @@ export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation,
     guardarConfiguracion('sincronizacionAutomatica', valor);
   };
 
-  const handleCambiarContrasena = () => {
-    Alert.alert(
-      'Cambiar Contraseña',
-      'Se enviará un enlace de restablecimiento a tu correo electrónico.',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Enviar', onPress: () => console.log('Enviando enlace...') }
-      ]
-    );
+  const handleLanguageChange = async (languageMode: LanguageMode) => {
+    try {
+      setLanguageLoading(true);
+      await changeLanguage(languageMode); // <- cambia el idioma en i18n y persiste el modo
+      setCurrentLanguageMode(languageMode);
+      setShowLanguageModal(false);
+      Alert.alert(
+        t('common.success'),
+        t('language.changeSuccess'),
+        [{ text: t('common.done'), style: 'default' }]
+      );
+    } catch (error) {
+      console.error('Error changing language:', error);
+      Alert.alert(
+        t('common.error'),
+        t('language.changeError'),
+        [{ text: t('common.retry'), style: 'default' }]
+      );
+    } finally {
+      setLanguageLoading(false);
+    }
   };
 
-  const handleExportarDatos = () => {
-    Alert.alert(
-      'Exportar Datos',
-      'Tus datos se exportarán en formato JSON.',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Exportar', onPress: () => console.log('Exportando datos...') }
-      ]
-    );
+  const getCurrentLanguageOption = (): LanguageOption => {
+    return languageOptions.find(option => option.code === currentLanguageMode) || languageOptions[0];
   };
 
-  const handleEliminarCuenta = () => {
-    Alert.alert(
-      'Eliminar Cuenta',
-      'Esta acción es irreversible. Se eliminarán todos tus datos permanentemente.',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { 
-          text: 'Eliminar', 
-          style: 'destructive',
-          onPress: () => console.log('Eliminando cuenta...')
-        }
-      ]
-    );
-  };
-
-  const handleAbrirSoporte = () => {
-    Linking.openURL('mailto:soporte@aureum.app');
-  };
-
-  const handleAbrirTerminos = () => {
-    Linking.openURL('https://aureum.app/terminos');
-  };
-
-  const handleAbrirPrivacidad = () => {
-    Linking.openURL('https://aureum.app/privacidad');
-  };
-
-  const configuracionItems: ConfiguracionItem[] = [
-    {
-      id: 'darkMode',
-      titulo: 'Modo Oscuro',
-      descripcion: 'Activa o desactiva el tema oscuro de la aplicación',
-      tipo: 'toggle',
-      icono: isDarkMode ? 'moon' : 'sunny',
-      valor: isDarkMode,
-      onToggle: toggleTheme,
-    },
-    {
-      id: 'notifEmail',
-      titulo: 'Notificaciones por Email',
-      descripcion: 'Recibir notificaciones importantes por correo electrónico',
-      tipo: 'toggle',
-      icono: 'mail',
-      valor: notificacionesEmail,
-      onToggle: handleToggleNotificacionesEmail,
-    },
-    {
-      id: 'notifPush',
-      titulo: 'Notificaciones Push',
-      descripcion: 'Recibir notificaciones en el dispositivo',
-      tipo: 'toggle',
-      icono: 'notifications',
-      valor: notificacionesPush,
-      onToggle: handleToggleNotificacionesPush,
-    },
-    {
-      id: 'sincronizacion',
-      titulo: 'Sincronización Automática',
-      descripcion: 'Sincronizar datos automáticamente en segundo plano',
-      tipo: 'toggle',
-      icono: 'sync',
-      valor: sincronizacionAutomatica,
-      onToggle: handleToggleSincronizacion,
-    },
-  ];
-
-  const seguridadItems: ConfiguracionItem[] = [
-    {
-      id: 'cambiarContrasena',
-      titulo: 'Cambiar Contraseña',
-      descripcion: 'Actualizar tu contraseña de acceso',
-      tipo: 'navegacion',
-      icono: 'lock-closed',
-      onPress: handleCambiarContrasena,
-    },
-    {
-      id: 'exportarDatos',
-      titulo: 'Exportar Mis Datos',
-      descripcion: 'Descargar una copia de tu información',
-      tipo: 'navegacion',
-      icono: 'download',
-      onPress: handleExportarDatos,
-    },
-  ];
-
-  const soporteItems: ConfiguracionItem[] = [
-    {
-      id: 'soporte',
-      titulo: 'Contactar Soporte',
-      descripcion: 'Obtener ayuda del equipo de soporte',
-      tipo: 'navegacion',
-      icono: 'help-circle',
-      onPress: handleAbrirSoporte,
-    },
-    {
-      id: 'terminos',
-      titulo: 'Términos y Condiciones',
-      tipo: 'navegacion',
-      icono: 'document-text',
-      onPress: handleAbrirTerminos,
-    },
-    {
-      id: 'privacidad',
-      titulo: 'Política de Privacidad',
-      tipo: 'navegacion',
-      icono: 'shield-checkmark',
-      onPress: handleAbrirPrivacidad,
-    },
-  ];
-
-  const renderConfiguracionItem = (item: ConfiguracionItem) => {
-    const themeStyles = isDarkMode ? darkStyles : lightStyles;
-
-    return (
-      <View key={item.id} style={[styles.itemContainer, themeStyles.itemContainer]}>
-        <View style={styles.itemContent}>
-          <View style={[styles.iconContainer, themeStyles.iconContainer]}>
-            <Ionicons 
-              name={item.icono as any} 
-              size={20} 
-              color={isDarkMode ? '#f59e0b' : '#f59e0b'} 
-            />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={[styles.itemTitle, themeStyles.itemTitle]}>
-              {item.titulo}
+  const renderLanguageModal = () => (
+    <Modal
+      visible={showLanguageModal}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={() => setShowLanguageModal(false)}
+    >
+      <SafeAreaView style={[
+        styles.modalContainer,
+        isDarkMode && styles.darkModalContainer,
+      ]}>
+        <View style={[styles.modalHeader, isDarkMode && styles.darkModalHeader]}>
+          <TouchableOpacity onPress={() => setShowLanguageModal(false)}>
+            <Text style={[styles.cancelButton, isDarkMode && styles.darkCancelButton]}>
+              {t('common.cancel')}
             </Text>
-            {item.descripcion && (
-              <Text style={[styles.itemDescription, themeStyles.itemDescription]}>
-                {item.descripcion}
-              </Text>
-            )}
-          </View>
-          {item.tipo === 'toggle' && (
-            <Switch
-              value={item.valor}
-              onValueChange={item.onToggle}
-              trackColor={{ false: '#767577', true: '#f59e0b' }}
-              thumbColor={item.valor ? '#ffffff' : '#f4f3f4'}
-            />
-          )}
-          {item.tipo === 'navegacion' && (
-            <TouchableOpacity onPress={item.onPress}>
-              <Ionicons 
-                name="chevron-forward" 
-                size={20} 
-                color={isDarkMode ? '#94a3b8' : '#64748b'} 
-              />
-            </TouchableOpacity>
-          )}
+          </TouchableOpacity>
+          <Text style={[styles.modalTitle, isDarkMode && styles.darkModalTitle]}>
+            {t('language.selectLanguage')}
+          </Text>
+          <View style={{ width: 60 }} />
         </View>
-      </View>
-    );
-  };
+
+        <View style={styles.languageList}>
+          {languageOptions.map((option) => (
+            <TouchableOpacity
+              key={option.code}
+              style={[
+                styles.languageOption,
+                isDarkMode && styles.darkLanguageOption,
+                currentLanguageMode === option.code && styles.selectedLanguageOption,
+              ]}
+              onPress={() => handleLanguageChange(option.code)}
+              activeOpacity={0.7}
+              disabled={languageLoading}
+            >
+              <View style={styles.languageOptionLeft}>
+                <Text style={styles.languageFlag}>{option.flag}</Text>
+                <View style={styles.languageTexts}>
+                  <Text style={[
+                    styles.languageOptionTitle,
+                    isDarkMode && styles.darkLanguageOptionTitle,
+                  ]}>
+                    {option.nativeName}
+                  </Text>
+                  <Text style={[
+                    styles.languageOptionSubtitle,
+                    isDarkMode && styles.darkLanguageOptionSubtitle,
+                  ]}>
+                    {option.name}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.languageOptionRight}>
+                {currentLanguageMode === option.code && (
+                  <>
+                    <Text style={[styles.currentLabel, { color: '#f59e0b' }]}>
+                      {t('language.current')}
+                    </Text>
+                    <Ionicons name="checkmark" size={24} color="#f59e0b" />
+                  </>
+                )}
+                {languageLoading && (
+                  <ActivityIndicator size="small" color="#f59e0b" />
+                )}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
 
   const themeStyles = isDarkMode ? darkStyles : lightStyles;
 
@@ -287,7 +262,9 @@ export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation,
     return (
       <SafeAreaView style={[styles.container, themeStyles.container]}>
         <View style={styles.loadingContainer}>
-          <Text style={[styles.loadingText, themeStyles.text]}>Cargando configuración...</Text>
+          <Text style={[styles.loadingText, themeStyles.text]}>
+            {t('common.loading')}
+          </Text>
         </View>
       </SafeAreaView>
     );
@@ -296,7 +273,9 @@ export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation,
   return (
     <SafeAreaView style={[styles.container, themeStyles.container]}>
       <View style={[styles.header, themeStyles.header]}>
-        <Text style={[styles.headerTitle, themeStyles.headerTitle]}>Configuración</Text>
+        <Text style={[styles.headerTitle, themeStyles.headerTitle]}>
+          {t('settings.title')}
+        </Text>
       </View>
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -323,55 +302,144 @@ export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation,
 
         {/* Sección General */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, themeStyles.sectionTitle]}>General</Text>
+          <Text style={[styles.sectionTitle, themeStyles.sectionTitle]}>
+            {t('settings.general')}
+          </Text>
           <View style={[styles.sectionCard, themeStyles.card]}>
-            {configuracionItems.map(renderConfiguracionItem)}
-          </View>
-        </View>
 
-        {/* Sección Seguridad */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, themeStyles.sectionTitle]}>Seguridad y Datos</Text>
-          <View style={[styles.sectionCard, themeStyles.card]}>
-            {seguridadItems.map(renderConfiguracionItem)}
-          </View>
-        </View>
-
-        {/* Sección Soporte */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, themeStyles.sectionTitle]}>Soporte y Legal</Text>
-          <View style={[styles.sectionCard, themeStyles.card]}>
-            {soporteItems.map(renderConfiguracionItem)}
-          </View>
-        </View>
-
-        {/* Zona de Peligro */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, styles.dangerTitle]}>Zona de Peligro</Text>
-          <View style={[styles.sectionCard, themeStyles.card]}>
-            <TouchableOpacity 
-              style={[styles.itemContainer, themeStyles.itemContainer]}
-              onPress={handleEliminarCuenta}
-            >
+            {/* Modo Oscuro */}
+            <View style={[styles.itemContainer, themeStyles.itemContainer]}>
               <View style={styles.itemContent}>
-                <View style={[styles.iconContainer, styles.dangerIconContainer]}>
-                  <Ionicons name="trash" size={20} color="#ef4444" />
+                <View style={[styles.iconContainer, themeStyles.iconContainer]}>
+                  <Ionicons
+                    name={isDarkMode ? 'moon' : 'sunny'}
+                    size={20}
+                    color="#f59e0b"
+                  />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={[styles.itemTitle, styles.dangerText]}>
-                    Eliminar Cuenta
+                  <Text style={[styles.itemTitle, themeStyles.itemTitle]}>
+                    {t('settings.darkMode')}
                   </Text>
                   <Text style={[styles.itemDescription, themeStyles.itemDescription]}>
-                    Eliminar permanentemente tu cuenta y todos los datos
+                    {t('settings.appearance')}
                   </Text>
                 </View>
-                <Ionicons 
-                  name="chevron-forward" 
-                  size={20} 
-                  color="#ef4444" 
+                <Switch
+                  value={isDarkMode}
+                  onValueChange={toggleTheme}
+                  trackColor={{ false: '#767577', true: '#f59e0b' }}
+                  thumbColor={isDarkMode ? '#ffffff' : '#f4f3f4'}
                 />
               </View>
-            </TouchableOpacity>
+            </View>
+
+            {/* Selector de Idioma */}
+            <View style={[styles.itemContainer, themeStyles.itemContainer]}>
+              <View style={styles.itemContent}>
+                <View style={[styles.iconContainer, themeStyles.iconContainer]}>
+                  <Ionicons name="language" size={20} color="#f59e0b" />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={[styles.itemTitle, themeStyles.itemTitle]}>
+                    {t('settings.language')}
+                  </Text>
+                  <Text style={[styles.itemDescription, themeStyles.itemDescription]}>
+                    {t('language.selectLanguage')}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.languageSelector}
+                  onPress={() => setShowLanguageModal(true)}
+                  disabled={languageLoading}
+                >
+                  {languageLoading ? (
+                    <ActivityIndicator size="small" color="#f59e0b" />
+                  ) : (
+                    <>
+                      <Text style={[styles.languageText, themeStyles.itemTitle]}>
+                        {getCurrentLanguageOption().flag} {getCurrentLanguageOption().nativeName}
+                      </Text>
+                      <Ionicons
+                        name="chevron-forward"
+                        size={20}
+                        color={isDarkMode ? '#94a3b8' : '#64748b'}
+                      />
+                    </>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Notificaciones Email */}
+            <View style={[styles.itemContainer, themeStyles.itemContainer]}>
+              <View style={styles.itemContent}>
+                <View style={[styles.iconContainer, themeStyles.iconContainer]}>
+                  <Ionicons name="mail" size={20} color="#f59e0b" />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={[styles.itemTitle, themeStyles.itemTitle]}>
+                    {t('settings.emailNotifications')}
+                  </Text>
+                  <Text style={[styles.itemDescription, themeStyles.itemDescription]}>
+                    {t('settings.emailNotificationsDesc')}
+                  </Text>
+                </View>
+                <Switch
+                  value={notificacionesEmail}
+                  onValueChange={handleToggleNotificacionesEmail}
+                  trackColor={{ false: '#767577', true: '#f59e0b' }}
+                  thumbColor={notificacionesEmail ? '#ffffff' : '#f4f3f4'}
+                />
+              </View>
+            </View>
+
+            {/* Notificaciones Push */}
+            <View style={[styles.itemContainer, themeStyles.itemContainer]}>
+              <View style={styles.itemContent}>
+                <View style={[styles.iconContainer, themeStyles.iconContainer]}>
+                  <Ionicons name="notifications" size={20} color="#f59e0b" />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={[styles.itemTitle, themeStyles.itemTitle]}>
+                    {t('settings.pushNotifications')}
+                  </Text>
+                  <Text style={[styles.itemDescription, themeStyles.itemDescription]}>
+                    {t('settings.pushNotificationsDesc')}
+                  </Text>
+                </View>
+                <Switch
+                  value={notificacionesPush}
+                  onValueChange={handleToggleNotificacionesPush}
+                  trackColor={{ false: '#767577', true: '#f59e0b' }}
+                  thumbColor={notificacionesPush ? '#ffffff' : '#f4f3f4'}
+                />
+              </View>
+            </View>
+
+            {/* Sincronización */}
+            <View style={[styles.itemContainer, themeStyles.itemContainer]}>
+              <View style={styles.itemContent}>
+                <View style={[styles.iconContainer, themeStyles.iconContainer]}>
+                  <Ionicons name="sync" size={20} color="#f59e0b" />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={[styles.itemTitle, themeStyles.itemTitle]}>
+                    {t('settings.autoSync')}
+                  </Text>
+                  <Text style={[styles.itemDescription, themeStyles.itemDescription]}>
+                    {t('settings.autoSyncDesc')}
+                  </Text>
+                </View>
+                <Switch
+                  value={sincronizacionAutomatica}
+                  onValueChange={handleToggleSincronizacion}
+                  trackColor={{ false: '#767577', true: '#f59e0b' }}
+                  thumbColor={sincronizacionAutomatica ? '#ffffff' : '#f4f3f4'}
+                />
+              </View>
+            </View>
+
           </View>
         </View>
 
@@ -381,10 +449,13 @@ export const Configuracion: React.FC<ConfiguracionProps> = ({ route, navigation,
             Aureum v1.0.0
           </Text>
           <Text style={[styles.appInfoText, themeStyles.secondaryText]}>
-            © 2025 Aureum. Todos los derechos reservados.
+            © 2025 Aureum. {t('language.current') /* opcional, solo para mostrar re-render */}
           </Text>
         </View>
       </ScrollView>
+
+      {/* Modal de Idioma */}
+      {renderLanguageModal()}
     </SafeAreaView>
   );
 };
@@ -489,14 +560,19 @@ const styles = StyleSheet.create({
   itemDescription: {
     fontSize: 14,
   },
-  dangerTitle: {
-    color: '#ef4444',
+  languageSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+    borderRadius: 8,
+    minWidth: 120,
   },
-  dangerIconContainer: {
-    backgroundColor: '#fef2f2',
-  },
-  dangerText: {
-    color: '#ef4444',
+  languageText: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginRight: 8,
   },
   appInfoSection: {
     paddingVertical: 24,
@@ -506,6 +582,103 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     marginBottom: 4,
+  },
+
+  // Modal styles
+  modalContainer: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+  },
+  darkModalContainer: {
+    backgroundColor: '#0f172a',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0',
+  },
+  darkModalHeader: {
+    backgroundColor: '#1e293b',
+    borderBottomColor: '#334155',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  darkModalTitle: {
+    color: '#f1f5f9',
+  },
+  cancelButton: {
+    fontSize: 16,
+    color: '#64748b',
+  },
+  darkCancelButton: {
+    color: '#94a3b8',
+  },
+  languageList: {
+    flex: 1,
+    paddingVertical: 20,
+  },
+  languageOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    backgroundColor: '#ffffff',
+    marginHorizontal: 20,
+    marginBottom: 8,
+    borderRadius: 12,
+  },
+  darkLanguageOption: {
+    backgroundColor: '#1e293b',
+  },
+  selectedLanguageOption: {
+    borderWidth: 2,
+    borderColor: '#f59e0b',
+  },
+  languageOptionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  languageFlag: {
+    fontSize: 32,
+    marginRight: 16,
+  },
+  languageTexts: {
+    flex: 1,
+  },
+  languageOptionTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#1e293b',
+    marginBottom: 2,
+  },
+  darkLanguageOptionTitle: {
+    color: '#f1f5f9',
+  },
+  languageOptionSubtitle: {
+    fontSize: 14,
+    color: '#64748b',
+  },
+  darkLanguageOptionSubtitle: {
+    color: '#94a3b8',
+  },
+  languageOptionRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  currentLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginRight: 8,
   },
 });
 

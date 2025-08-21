@@ -9,6 +9,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from "react-i18next";
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useResponsive } from '../../hooks/useResponsive';
@@ -55,6 +56,7 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
   const [loading, setLoading] = useState(true);
@@ -179,9 +181,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
       <SafeAreaView style={[styles.container, isDarkMode && styles.darkContainer]}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
-          <Text style={[styles.loadingText, isDarkMode && styles.darkText]}>
-            Cargando dashboard...
-          </Text>
+           <Text style={[styles.loadingText, isDarkMode && styles.darkText]}>
+             {t("dashboard.loading")}
+           </Text>
         </View>
       </SafeAreaView>
     );
@@ -193,14 +195,14 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
       <View style={[styles.header, isDarkMode && styles.darkHeader]}>
         <View>
           <Text style={[styles.welcomeText, isDarkMode && styles.darkTextSecondary]}>
-            Bienvenido de vuelta
+            {t("dashboard.welcomeBack")}
           </Text>
           <Text style={[
             styles.userName,
             isDarkMode && styles.darkText,
             { fontSize: isTablet ? 24 : 20 }
           ]}>
-            {userData?.nombre || 'Usuario'}
+            {userData?.nombre || t("common.user")}
           </Text>
         </View>
         <View style={styles.headerActions}>
@@ -247,7 +249,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
         ]}>
           <View style={styles.balanceHeader}>
             <Text style={[styles.balanceLabel, isDarkMode && styles.darkTextSecondary]}>
-              Balance Total
+              {t("dashboard.totalBalance")}
             </Text>
             <Text style={[styles.balanceDate, isDarkMode && styles.darkTextSecondary]}>
               {formatDateLong(new Date())}
@@ -271,7 +273,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
                   {formatCurrency(dashboardData.ingresos.total)}
                 </Text>
                 <Text style={[styles.statLabel, isDarkMode && styles.darkTextSecondary]}>
-                  Ingresos (+{dashboardData.ingresos.porcentajeIncremento}%)
+                  {t("dashboard.incomeWithPct", { pct: dashboardData.ingresos.porcentajeIncremento })}
                 </Text>
               </View>
             </View>
@@ -285,7 +287,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
                   {formatCurrency(dashboardData.gastos.total)}
                 </Text>
                 <Text style={[styles.statLabel, isDarkMode && styles.darkTextSecondary]}>
-                  Gastos (+{dashboardData.gastos.porcentajeIncremento}%)
+                  {t("dashboard.expenseWithPct", { pct: dashboardData.gastos.porcentajeIncremento })}
                 </Text>
               </View>
             </View>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -33,6 +34,7 @@ interface IngresosProps {
 }
 
 const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
   const [loading, setLoading] = useState(true);
@@ -109,13 +111,13 @@ const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
 
   const handleAddIngreso = () => {
     if (!nuevoIngreso.concepto || !nuevoIngreso.fuente || !nuevoIngreso.monto) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      Alert.alert(t("common.error"), t("common.fillAllFields"));
       return;
     }
 
     const monto = parseFloat(nuevoIngreso.monto);
     if (isNaN(monto) || monto <= 0) {
-      Alert.alert('Error', 'El monto debe ser un número válido mayor a 0');
+      Alert.alert(t("common.error"), t("common.amountInvalid"));
       return;
     }
 
@@ -131,7 +133,7 @@ const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
     setIngresos(prev => [newIngreso, ...prev]);
     setNuevoIngreso({ concepto: '', fuente: '', monto: '', categoria: 'Salario' });
     setShowAddModal(false);
-    Alert.alert('Éxito', 'Ingreso registrado correctamente');
+    Alert.alert(t("common.success"), t("income.created"));
   };
 
   const getCategoriaColor = (categoria: string) => {
@@ -150,7 +152,7 @@ const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={[styles.loadingText, isDarkMode && styles.darkText]}>
-            Cargando ingresos...
+            {t("income.loading")}
           </Text>
         </View>
       </SafeAreaView>
@@ -167,7 +169,7 @@ const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
             isDarkMode && styles.darkText,
             { fontSize: isTablet ? 24 : 20 }
           ]}>
-            Gestión de Ingresos
+            {t("income.title")}
           </Text>
           <Text style={[styles.headerDate, isDarkMode && styles.darkTextSecondary]}>
             {formatDate(new Date())}
@@ -204,7 +206,7 @@ const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
           { marginHorizontal: wp(4), marginTop: hp(2) }
         ]}>
           <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
-            Resumen del Mes
+            {t("income.monthSummary")}
           </Text>
           
           <View style={styles.resumenGrid}>
@@ -256,7 +258,7 @@ const Ingresos: React.FC<IngresosProps> = ({ onAuthChange }) => {
         ]}>
           <View style={styles.cardHeader}>
             <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
-              Historial de Ingresos
+              {t("income.history")}
             </Text>
             <TouchableOpacity
               style={styles.addButton}

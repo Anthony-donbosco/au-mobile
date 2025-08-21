@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -36,6 +37,7 @@ interface GastosProps {
 }
 
 const Gastos: React.FC<GastosProps> = ({ onAuthChange }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,7 @@ const Gastos: React.FC<GastosProps> = ({ onAuthChange }) => {
   const [totalGastos, setTotalGastos] = useState(0);
   const [comparacionMensual, setComparacionMensual] = useState<any[]>([]);
 
-  const periodos = ['Esta Semana', 'Este Mes', 'Últimos 3 Meses', 'Este Año'];
+  const periodos = [t("period.thisWeek"), t("period.thisMonth"), t("period.last3Months"), t("period.thisYear")];
 
   useEffect(() => {
     loadGastos();
@@ -161,7 +163,7 @@ const Gastos: React.FC<GastosProps> = ({ onAuthChange }) => {
     return (
       <View style={styles.chartContainer}>
         <Text style={[styles.chartTitle, isDarkMode && styles.darkText]}>
-          Tendencia de Gastos (Últimos 6 Meses)
+          {t("expenses.trend6m")}
         </Text>
         <View style={[styles.chart, { width: chartWidth, height: chartHeight }]}>
           {comparacionMensual.map((item, index) => {
@@ -196,7 +198,7 @@ const Gastos: React.FC<GastosProps> = ({ onAuthChange }) => {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={[styles.loadingText, isDarkMode && styles.darkText]}>
-            Cargando análisis de gastos...
+            {t("expenses.loading")}
           </Text>
         </View>
       </SafeAreaView>

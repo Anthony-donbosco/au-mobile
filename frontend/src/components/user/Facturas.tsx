@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
   View,
   Text,
@@ -37,12 +38,13 @@ interface FacturasProps {
 }
 
 const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isTablet, wp, hp } = useResponsive();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [filtroEstado, setFiltroEstado] = useState<'todas' | 'Pendiente' | 'Pagada' | 'Vencida'>('todas');
+  const [filtroEstado, setFiltroEstado] = useState<'all' | 'pending' | 'paid' | 'overdue'>('all');
   const [terminoBusqueda, setTerminoBusqueda] = useState('');
   const [facturas, setFacturas] = useState<Factura[]>([]);
   const [nuevaFactura, setNuevaFactura] = useState({
@@ -132,13 +134,13 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
 
   const handleAddFactura = () => {
     if (!nuevaFactura.nombre || !nuevaFactura.tipo || !nuevaFactura.monto || !nuevaFactura.fechaVencimiento) {
-      Alert.alert('Error', 'Por favor completa todos los campos obligatorios');
+      Alert.alert(t("common.error"), t("common.fillAllFields"));
       return;
     }
 
     const monto = parseFloat(nuevaFactura.monto);
     if (isNaN(monto) || monto <= 0) {
-      Alert.alert('Error', 'El monto debe ser un número válido mayor a 0');
+      Alert.alert(t("common.error"), t("common.amountInvalid"));
       return;
     }
 
@@ -155,7 +157,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
     setFacturas(prev => [newFactura, ...prev]);
     setNuevaFactura({ nombre: '', tipo: '', monto: '', fechaVencimiento: '', descripcion: '' });
     setShowAddModal(false);
-    Alert.alert('Éxito', 'Factura registrada correctamente');
+    Alert.alert(t("common.success"), t("bills.created"));
   };
 
   const handleMarcarPagada = (id: number) => {
@@ -197,7 +199,10 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
   };
 
   const facturasFiltradas = facturas.filter(f => {
-    const matchEstado = filtroEstado === 'todas' || f.estado === filtroEstado;
+    const estadoMap: Record<Factura['estado'], 'pending' | 'paid' | 'overdue'> = {
+      Pendiente: 'pending', Pagada: 'paid', Vencida: 'overdue'
+    };
+    const matchEstado = filtroEstado === 'all' || estadoMap[f.estado] === filtroEstado;
     const matchBusqueda = f.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
                          f.tipo.toLowerCase().includes(terminoBusqueda.toLowerCase());
     return matchEstado && matchBusqueda;
@@ -213,7 +218,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={[styles.loadingText, isDarkMode && styles.darkText]}>
-            Cargando facturas...
+            {t("bills.loading")}
           </Text>
         </View>
       </SafeAreaView>
@@ -230,7 +235,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
             isDarkMode && styles.darkText,
             { fontSize: isTablet ? 24 : 20 }
           ]}>
-            Gestión de Facturas
+            {t("bills.title")}
           </Text>
           <Text style={[styles.headerDate, isDarkMode && styles.darkTextSecondary]}>
             {formatDate(new Date())}
@@ -266,7 +271,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
           />
           <TextInput
             style={[styles.searchInput, isDarkMode && styles.darkSearchInput]}
-            placeholder="Buscar facturas..."
+            placeholder={t("bills.searchPlaceholder")}
             placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
             value={terminoBusqueda}
             onChangeText={setTerminoBusqueda}
@@ -275,7 +280,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.filterTabs}>
-            {['todas', 'Pendiente', 'Pagada', 'Vencida'].map((estado) => (
+            {[ 'all', 'pending', 'paid', 'overdue' ].map((estado) => (
               <TouchableOpacity
                 key={estado}
                 style={[
@@ -292,7 +297,10 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
                   isDarkMode && styles.darkText,
                   filtroEstado === estado && styles.filterTabTextActive,
                 ]}>
-                  {estado === 'todas' ? 'Todas' : estado}
+                  {estado === 'all' ? t("bills.filters.all")
+                                   : estado === 'pending' ? t("bills.filters.pending")
+                                   : estado === 'paid' ? t("bills.filters.paid")
+                                   : t("bills.filters.overdue")}
                 </Text>
               </TouchableOpacity>
             ))}

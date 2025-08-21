@@ -12,7 +12,6 @@ import { useDarkMode } from './src/hooks/useDarkMode';
 import { globalStyles } from './src/styles/globalStyles';
 import { checkNetworkConnection } from './src/utils/networkUtils';
 
-
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -60,18 +59,18 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <NavigationContainer>
-          <StatusBar style={isDarkMode ? 'light' : 'dark'} />
-          <AppNavigator
-            isAuthenticated={isAuthenticated}
-            userRole={userRole}
-            onAuthChange={setIsAuthenticated}
-            onRoleChange={setUserRole}
-          />
-        </NavigationContainer>
-      </QueryClientProvider>
-          </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer>
+            <StatusBar style={isDarkMode ? 'light' : 'dark'} />
+            <AppNavigator
+              isAuthenticated={isAuthenticated}
+              userRole={userRole}
+              onAuthChange={setIsAuthenticated}
+              onRoleChange={setUserRole}
+            />
+          </NavigationContainer>
+        </QueryClientProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }
