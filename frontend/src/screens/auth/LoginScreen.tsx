@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../contexts/ThemeContext';
 import Login from '../../components/auth/Login';
 import { AuthButton } from '../../components/auth/AuthButton';
@@ -20,6 +21,7 @@ import { CredencialesLogin, Usuario, LoginScreenProps } from '@/types';
 const { width, height } = Dimensions.get('window');
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const [cargando, setCargando] = useState(false);
 
@@ -50,8 +52,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin })
       
     } catch (error) {
       Alert.alert(
-        'Error de autenticación',
-        'Credenciales inválidas. Por favor, intenta de nuevo.'
+        t('auth.login.authError'),
+        t('auth.login.invalidCredentials')
       );
     } finally {
       setCargando(false);
@@ -63,7 +65,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin })
   };
 
   const manejarLoginGoogle = () => {
-    Alert.alert('Google Sign-In', 'Funcionalidad en desarrollo');
+    Alert.alert('Google Sign-In', t('common.functionalityInDevelopment', 'Funcionalidad en desarrollo'));
   };
 
   const themeStyles = isDarkMode ? darkStyles : lightStyles;
@@ -90,18 +92,18 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin })
             />
             <View style={styles.overlay} />
             <View style={styles.logoContainer}>
-              <Text style={styles.logo}>AUREUM</Text>
-              <Text style={styles.subtitle}>Tu gestor financiero personal</Text>
+              <Text style={styles.logo}>{t('auth.brand.name')}</Text>
+              <Text style={styles.subtitle}>{t('auth.brand.tagline')}</Text>
             </View>
           </View>
 
           {/* Formulario de login */}
           <View style={[styles.formSection, themeStyles.formSection]}>
             <Text style={[styles.welcomeTitle, themeStyles.text]}>
-              Bienvenido de vuelta
+              {t('auth.login.title')}
             </Text>
             <Text style={[styles.welcomeSubtitle, themeStyles.secondaryText]}>
-              Inicia sesión para continuar
+              {t('auth.login.subtitle')}
             </Text>
 
             <Login 
@@ -114,14 +116,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin })
             <View style={styles.dividerContainer}>
               <View style={[styles.dividerLine, themeStyles.dividerLine]} />
               <Text style={[styles.dividerText, themeStyles.secondaryText]}>
-                o inicia sesión con
+                {t('auth.login.orSignInWith')}
               </Text>
               <View style={[styles.dividerLine, themeStyles.dividerLine]} />
             </View>
 
             {/* Google Sign-In */}
             <AuthButton
-              title="Continuar con Google"
+              title={t('auth.login.googleSignIn')}
               onPress={manejarLoginGoogle}
               variant="google"
               icon="logo-google"
@@ -131,10 +133,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation, onLogin })
             {/* Link a registro */}
             <View style={styles.registerSection}>
               <Text style={[styles.registerText, themeStyles.secondaryText]}>
-                ¿No tienes una cuenta?{' '}
+                {t('auth.login.noAccount')}{' '}
               </Text>
               <AuthButton
-                title="Crear una cuenta"
+                title={t('auth.login.createAccount')}
                 onPress={navegarARegistro}
                 variant="link"
                 disabled={cargando}

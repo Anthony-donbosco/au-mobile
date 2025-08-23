@@ -7,21 +7,23 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { LoginProps, CredencialesLogin } from '../../types';
 
 const Login: React.FC<LoginProps> = ({ onSubmit, loading, isDarkMode }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
 
   const manejarEnvio = () => {
     if (!email.trim() || !contrasena.trim()) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      Alert.alert(t('common.error'), t('auth.validation.fillAllFields'));
       return;
     }
 
     if (!email.includes('@')) {
-      Alert.alert('Error', 'Por favor ingresa un email válido');
+      Alert.alert(t('common.error'), t('auth.validation.invalidEmail'));
       return;
     }
 
@@ -38,10 +40,10 @@ const Login: React.FC<LoginProps> = ({ onSubmit, loading, isDarkMode }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, themeStyles.label]}>Email</Text>
+        <Text style={[styles.label, themeStyles.label]}>{t('auth.login.email')}</Text>
         <TextInput
           style={[styles.input, themeStyles.input]}
-          placeholder="Ingresa tu email"
+          placeholder={t('auth.login.emailPlaceholder')}
           placeholderTextColor={isDarkMode ? '#94a3b8' : '#64748b'}
           value={email}
           onChangeText={setEmail}
@@ -53,11 +55,11 @@ const Login: React.FC<LoginProps> = ({ onSubmit, loading, isDarkMode }) => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, themeStyles.label]}>Contraseña</Text>
+        <Text style={[styles.label, themeStyles.label]}>{t('auth.login.password')}</Text>
         <View style={styles.passwordContainer}>
           <TextInput
             style={[styles.passwordInput, themeStyles.input]}
-            placeholder="Ingresa tu contraseña"
+            placeholder={t('auth.login.passwordPlaceholder')}
             placeholderTextColor={isDarkMode ? '#94a3b8' : '#64748b'}
             value={contrasena}
             onChangeText={setContrasena}
@@ -72,7 +74,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit, loading, isDarkMode }) => {
             disabled={loading}
           >
             <Text style={[styles.toggleText, themeStyles.toggleText]}>
-              {mostrarContrasena ? 'Ocultar' : 'Mostrar'}
+              {mostrarContrasena ? t('common.hide', 'Ocultar') : t('common.show', 'Mostrar')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -80,11 +82,11 @@ const Login: React.FC<LoginProps> = ({ onSubmit, loading, isDarkMode }) => {
 
       <TouchableOpacity
         style={styles.forgotPassword}
-        onPress={() => Alert.alert('Recuperar contraseña', 'Funcionalidad en desarrollo')}
+        onPress={() => Alert.alert(t('auth.login.forgotPassword'), t('common.functionalityInDevelopment', 'Funcionalidad en desarrollo'))}
         disabled={loading}
       >
         <Text style={[styles.forgotPasswordText, themeStyles.linkText]}>
-          ¿Olvidaste tu contraseña?
+          {t('auth.login.forgotPassword')}
         </Text>
       </TouchableOpacity>
 
@@ -97,7 +99,7 @@ const Login: React.FC<LoginProps> = ({ onSubmit, loading, isDarkMode }) => {
         disabled={loading}
       >
         <Text style={styles.submitButtonText}>
-          {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+          {loading ? t('auth.login.signingIn') : t('auth.login.signInButton')}
         </Text>
       </TouchableOpacity>
     </View>

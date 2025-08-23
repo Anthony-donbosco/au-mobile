@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import i18n from '../i18n/i18n';
 
 const API_BASE_URL =
   // Si usas app.json/app.config con extra.apiUrl úsalo; si no, cae a localhost:5000/api
@@ -33,7 +34,8 @@ export const formatCurrency = (amount: number): string => {
 
 export const formatDate = (date: string | Date): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  return dateObj.toLocaleDateString('es-ES', {
+  const locale = i18n.language === 'en' ? 'en-US' : 'es-ES';
+  return dateObj.toLocaleDateString(locale, {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -42,7 +44,8 @@ export const formatDate = (date: string | Date): string => {
 
 export const formatDateLong = (date: string | Date): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  return dateObj.toLocaleDateString('es-ES', {
+  const locale = i18n.language === 'en' ? 'en-US' : 'es-ES';
+  return dateObj.toLocaleDateString(locale, {
     weekday: 'long',
     year: 'numeric',
     month: 'long',

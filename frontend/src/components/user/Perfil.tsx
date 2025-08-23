@@ -231,19 +231,19 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
     },
     {
       id: 'usuario',
-      label: t("profile.phone"),
+      label: t("profile.username"),
       valor: datosUsuario.usuario,
-      placeholder: t("profile.phonePlaceholder"),
+      placeholder: t("profile.usernamePlaceholder"),
       editable: true,
       tipo: 'texto',
     },
     {
-      id: 'numeroTelefono',
-      label: 'Número de Teléfono',
+      id: 'usuario',
+      label: t("profile.phoneNumber"),
       valor: datosUsuario.numeroTelefono,
-      placeholder: '+503 0000-0000',
+      placeholder: t("profile.phonePlaceholder"),
       editable: true,
-      tipo: 'telefono',
+      tipo: 'texto',
     },
   ];
 
@@ -339,11 +339,11 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
               )}
             </TouchableOpacity>
             <Text style={[styles.fotoLabel, themeStyles.secondaryText]}>
-              Tu foto de perfil
+              {t("profile.profilePhoto")}
             </Text>
             {modoEdicion && (
               <Text style={[styles.fotoHint, themeStyles.secondaryText]}>
-                Toca para cambiar
+                {t("profile.changeProfilePhoto")}
               </Text>
             )}
           </View>
@@ -360,7 +360,7 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
                 style={[styles.button, styles.cancelButton]}
                 onPress={handleCancelarEdicion}
               >
-                <Text style={styles.cancelButtonText}>Cancelar</Text>
+                <Text style={styles.cancelButtonText}>{t("profile.cancelChanges")}</Text>
               </TouchableOpacity>
               <TouchableOpacity 
                 style={[styles.button, styles.saveButton]}
@@ -368,7 +368,7 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
                 disabled={guardando}
               >
                 <Text style={styles.saveButtonText}>
-                  {guardando ? 'Guardando...' : 'Guardar Cambios'}
+                  {guardando ? t("profile.savingChanges") : t("profile.saveChanges")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -383,7 +383,7 @@ export const Perfil: React.FC<PerfilProps> = ({ route, navigation, onAuthChange 
                 color={isDarkMode ? '#60a5fa' : '#3b82f6'} 
               />
               <Text style={[styles.infoText, themeStyles.secondaryText]}>
-                Tu información personal está protegida y solo tú puedes verla y modificarla.
+                {t("profile.informationWarningProfile")}
               </Text>
             </View>
           </View>

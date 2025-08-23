@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../contexts/ThemeContext';
 import Registro from '../../components/auth/Registro';
 import { AuthButton } from '../../components/auth/AuthButton';
@@ -20,6 +21,7 @@ import { DatosRegistro, Usuario, RegisterScreenProps } from '@/types';
 const { width, height } = Dimensions.get('window');
 
 export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRegister }) => {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useTheme();
   const [cargando, setCargando] = useState(false);
 
@@ -29,12 +31,12 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
 
       // Validaciones básicas
       if (datosRegistro.contrasena !== datosRegistro.confirmarContrasena) {
-        Alert.alert('Error', 'Las contraseñas no coinciden');
+        Alert.alert(t('common.error'), t('auth.register.passwordsDoNotMatch'));
         return;
       }
 
       if (datosRegistro.contrasena.length < 6) {
-        Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres');
+        Alert.alert(t('common.error'), t('auth.register.passwordTooShort'));
         return;
       }
 
@@ -58,11 +60,11 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
       await AsyncStorage.setItem('usuario', JSON.stringify(usuarioRegistrado));
       
       Alert.alert(
-        'Registro exitoso',
-        '¡Tu cuenta ha sido creada correctamente!',
+        t('auth.register.registrationSuccess'),
+        t('auth.register.accountCreated'),
         [
           {
-            text: 'Continuar',
+            text: t('common.continue'),
             onPress: () => onRegister(usuarioRegistrado)
           }
         ]
@@ -70,8 +72,8 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
       
     } catch (error) {
       Alert.alert(
-        'Error de registro',
-        'No se pudo crear la cuenta. Por favor, intenta de nuevo.'
+        t('auth.register.registrationError'),
+        t('auth.register.accountCreationFailed')
       );
     } finally {
       setCargando(false);
@@ -83,7 +85,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
   };
 
   const manejarRegistroGoogle = () => {
-    Alert.alert('Google Sign-Up', 'Funcionalidad en desarrollo');
+    Alert.alert('Google Sign-Up', t('common.functionalityInDevelopment', 'Funcionalidad en desarrollo'));
   };
 
   const themeStyles = isDarkMode ? darkStyles : lightStyles;
@@ -110,17 +112,17 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
             />
             <View style={styles.overlay} />
             <View style={styles.logoContainer}>
-              <Text style={styles.logo}>AUREUM</Text>
+              <Text style={styles.logo}>{t('auth.brand.name')}</Text>
             </View>
           </View>
 
           {/* Formulario de registro */}
           <View style={[styles.formSection, themeStyles.formSection]}>
             <Text style={[styles.welcomeTitle, themeStyles.text]}>
-              Crear cuenta
+              {t('auth.register.title')}
             </Text>
             <Text style={[styles.welcomeSubtitle, themeStyles.secondaryText]}>
-              Crea tu cuenta para comenzar a administrar tus finanzas
+              {t('auth.register.subtitle')}
             </Text>
 
             <Registro 
@@ -133,14 +135,14 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
             <View style={styles.dividerContainer}>
               <View style={[styles.dividerLine, themeStyles.dividerLine]} />
               <Text style={[styles.dividerText, themeStyles.secondaryText]}>
-                o regístrate con
+                {t('auth.register.orRegisterWith')}
               </Text>
               <View style={[styles.dividerLine, themeStyles.dividerLine]} />
             </View>
 
             {/* Google Sign-Up */}
             <AuthButton
-              title="Continuar con Google"
+              title={t('auth.login.googleSignIn')}
               onPress={manejarRegistroGoogle}
               variant="google"
               icon="logo-google"
@@ -150,10 +152,10 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
             {/* Link a login */}
             <View style={styles.loginSection}>
               <Text style={[styles.loginText, themeStyles.secondaryText]}>
-                ¿Ya tienes una cuenta?{' '}
+                {t('auth.register.haveAccount')}{' '}
               </Text>
               <AuthButton
-                title="Iniciar sesión"
+                title={t('auth.register.signIn')}
                 onPress={navegarALogin}
                 variant="link"
                 disabled={cargando}
@@ -163,20 +165,20 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation, onRe
             {/* Términos y condiciones */}
             <View style={styles.termsSection}>
               <Text style={[styles.termsText, themeStyles.secondaryText]}>
-                Al registrarte, aceptas nuestros{' '}
+                {t('auth.register.terms')}{' '}
               </Text>
               <AuthButton
-                title="Términos y Condiciones"
-                onPress={() => Alert.alert('Términos', 'Términos y condiciones')}
+                title={t('auth.register.termsAndConditions')}
+                onPress={() => Alert.alert(t('auth.register.termsAndConditions'), t('auth.register.termsAndConditions'))}
                 variant="link"
                 size="small"
               />
               <Text style={[styles.termsText, themeStyles.secondaryText]}>
-                {' '}y{' '}
+                {' '}{t('auth.register.and')}{' '}
               </Text>
               <AuthButton
-                title="Política de Privacidad"
-                onPress={() => Alert.alert('Privacidad', 'Política de privacidad')}
+                title={t('auth.register.privacyPolicy')}
+                onPress={() => Alert.alert(t('auth.register.privacyPolicy'), t('auth.register.privacyPolicy'))}
                 variant="link"
                 size="small"
               />

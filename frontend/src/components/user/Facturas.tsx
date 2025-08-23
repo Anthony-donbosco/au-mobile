@@ -334,7 +334,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
               {formatCurrency(totalPendientes)}
             </Text>
             <Text style={[styles.resumenLabel, isDarkMode && styles.darkTextSecondary]}>
-              Total Pendiente
+              {t("bills.totalPending")}
             </Text>
           </View>
           
@@ -346,7 +346,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
               {facturasPendientes}
             </Text>
             <Text style={[styles.resumenLabel, isDarkMode && styles.darkTextSecondary]}>
-              Pendientes
+              {t("bills.pendingCount")} 
             </Text>
           </View>
           
@@ -358,7 +358,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
               {facturasVencidas}
             </Text>
             <Text style={[styles.resumenLabel, isDarkMode && styles.darkTextSecondary]}>
-              Vencidas
+              {t("bills.overdueCount")}
             </Text>
           </View>
         </View>
@@ -450,7 +450,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
                       onPress={() => handleMarcarPagada(factura.id)}
                     >
                       <Ionicons name="checkmark" size={16} color="#fff" />
-                      <Text style={styles.pagarButtonText}>Marcar Pagada</Text>
+                      <Text style={styles.pagarButtonText}>{t("bills.markAsPaid")}</Text>
                     </TouchableOpacity>
                   )}
                 </View>

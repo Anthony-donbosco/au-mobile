@@ -20,7 +20,69 @@
     "all": "All",
     "view": "View",
     "close": "Close",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "continue": "Continue",
+    "show": "Show",
+    "hide": "Hide",
+    "functionalityInDevelopment": "Functionality in development",
+    "confirmation": "confirmation"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "forgotPassword": "Forgot your password?",
+      "signInButton": "Sign In",
+      "signingIn": "Signing in...",
+      "orSignInWith": "or sign in with",
+      "googleSignIn": "Continue with Google",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create an account",
+      "invalidCredentials": "Invalid credentials. Please try again.",
+      "authError": "Authentication Error"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Create your account to start managing your finances",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "createAccountButton": "Create Account",
+      "creatingAccount": "Creating account...",
+      "orRegisterWith": "or register with",
+      "googleSignUp": "Continue with Google",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "terms": "By registering, you accept our",
+      "termsAndConditions": "Terms and Conditions",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "registrationSuccess": "Registration successful",
+      "accountCreated": "Your account has been created successfully!",
+      "registrationError": "Registration Error",
+      "accountCreationFailed": "Could not create account. Please try again.",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 6 characters"
+    },
+    "validation": {
+      "fillAllFields": "Please fill in all fields",
+      "invalidEmail": "Please enter a valid email",
+      "passwordMismatch": "Passwords do not match",
+      "passwordMinLength": "Password must be at least 6 characters"
+    },
+    "brand": {
+      "name": "AUREUM",
+      "tagline": "Your personal finance manager"
+    }
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -42,7 +104,15 @@
     "incomeWithPct": "Income (+{{pct}}%)",
     "expenseWithPct": "Expenses (+{{pct}}%)",
     "overview": "Overview",
-    "quickActions": "Quick Actions"
+    "quickActions": "Quick Actions",
+    "MyObjective": "My Objectives",
+    "ObjectivesProgress": "Complete",
+    "Transaction": "Transactions",
+    "ViewTransaction": "View All",
+    "billsPending": "Bills Pending",
+    "ViewBills": "View All",
+    "dueBills": "Due",
+    "NoBillsPending": "Awesome! No pending payments left."
   },
   "period": {
     "thisWeek": "This Week",
@@ -58,17 +128,6 @@
   },
 
   "tx": {
-    "loading": "Loading transactions...",
-    "title": "Transaction History",
-    "searchPlaceholder": "Search transactions...",
-    "filters": {
-      "all": "All",
-      "income": "Income",
-      "expense": "Expenses"
-    }
-  },
-
-  "transactions": {
     "loading": "Loading transactions...",
     "title": "Transaction History",
     "searchPlaceholder": "Search transactions...",
@@ -125,6 +184,9 @@
     "status": "Status",
     "addNew": "New Bill",
     "markAsPaid": "Mark as Paid",
+    "totalPending": "Total Amount",
+    "pendingCount": "Pending Count",
+    "overdueCount": "Overdue",
     "noBills": "No bills registered"
   },
 
@@ -193,8 +255,8 @@
     "email": "Email Address",
     "emailPlaceholder": "user@example.com",
     "username": "Username",
-    "usernamePlaceholder": "username",
-    "phone": "Phone Number",
+    "usernamePlaceholder": "Username",
+    "phoneNumber": "Phone Number",
     "phonePlaceholder": "+503 0000-0000",
     "profilePicture": "Profile Picture",
     "personalInfo": "Personal Information",
@@ -204,6 +266,12 @@
     "currentPassword": "Current Password",
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
+    "informationWarningProfile": "Your personal information is protected and only you can view and modify it.",
+    "profilePhoto": "Your profile photo",
+    "changeProfilePhoto":"Tap to change",
+    "saveChanges":"Save Changes",
+    "savingChanges": "Saving...",
+    "cancelChanges": "Cancel",
 
     "loading": "Loading profile...",
     "photoSection": {

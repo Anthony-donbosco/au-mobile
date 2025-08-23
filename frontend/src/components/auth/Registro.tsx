@@ -7,9 +7,11 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { RegistroProps, DatosRegistro } from '../../types';
 
 const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) => {
+  const { t } = useTranslation();
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [contrasena, setContrasena] = useState('');
@@ -19,22 +21,22 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
 
   const manejarEnvio = () => {
     if (!nombre.trim() || !email.trim() || !contrasena.trim() || !confirmarContrasena.trim()) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      Alert.alert(t('common.error'), t('auth.validation.fillAllFields'));
       return;
     }
 
     if (!email.includes('@')) {
-      Alert.alert('Error', 'Por favor ingresa un email válido');
+      Alert.alert(t('common.error'), t('auth.validation.invalidEmail'));
       return;
     }
 
     if (contrasena !== confirmarContrasena) {
-      Alert.alert('Error', 'Las contraseñas no coinciden');
+      Alert.alert(t('common.error'), t('auth.validation.passwordMismatch'));
       return;
     }
 
     if (contrasena.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres');
+      Alert.alert(t('common.error'), t('auth.validation.passwordMinLength'));
       return;
     }
 
@@ -54,10 +56,10 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, themeStyles.label]}>Nombre completo</Text>
+        <Text style={[styles.label, themeStyles.label]}>{t('auth.register.fullName')}</Text>
         <TextInput
           style={[styles.input, themeStyles.input]}
-          placeholder="Ingresa tu nombre completo"
+          placeholder={t('auth.register.fullNamePlaceholder')}
           placeholderTextColor={isDarkMode ? '#94a3b8' : '#64748b'}
           value={nombre}
           onChangeText={setNombre}
@@ -68,10 +70,10 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, themeStyles.label]}>Email</Text>
+        <Text style={[styles.label, themeStyles.label]}>{t('auth.register.email')}</Text>
         <TextInput
           style={[styles.input, themeStyles.input]}
-          placeholder="Ingresa tu email"
+          placeholder={t('auth.register.emailPlaceholder')}
           placeholderTextColor={isDarkMode ? '#94a3b8' : '#64748b'}
           value={email}
           onChangeText={setEmail}
@@ -83,11 +85,11 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, themeStyles.label]}>Contraseña</Text>
+        <Text style={[styles.label, themeStyles.label]}>{t('auth.register.password')}</Text>
         <View style={[styles.passwordContainer, themeStyles.input]}>
           <TextInput
             style={styles.passwordInput}
-            placeholder="Crea una contraseña"
+            placeholder={t('auth.register.passwordPlaceholder')}
             placeholderTextColor={isDarkMode ? '#94a3b8' : '#64748b'}
             value={contrasena}
             onChangeText={setContrasena}
@@ -102,18 +104,18 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
             disabled={loading}
           >
             <Text style={[styles.toggleText, themeStyles.toggleText]}>
-              {mostrarContrasena ? 'Ocultar' : 'Mostrar'}
+              {mostrarContrasena ? t('common.hide', 'Ocultar') : t('common.show', 'Mostrar')}
             </Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, themeStyles.label]}>Confirmar contraseña</Text>
+        <Text style={[styles.label, themeStyles.label]}>{t('auth.register.confirmPassword')}</Text>
         <View style={[styles.passwordContainer, themeStyles.input]}>
           <TextInput
             style={styles.passwordInput}
-            placeholder="Confirma tu contraseña"
+            placeholder={t('auth.register.confirmPasswordPlaceholder')}
             placeholderTextColor={isDarkMode ? '#94a3b8' : '#64748b'}
             value={confirmarContrasena}
             onChangeText={setConfirmarContrasena}
@@ -128,7 +130,7 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
             disabled={loading}
           >
             <Text style={[styles.toggleText, themeStyles.toggleText]}>
-              {mostrarConfirmarContrasena ? 'Ocultar' : 'Mostrar'}
+              {mostrarConfirmarContrasena ? t('common.hide', 'Ocultar') : t('common.show', 'Mostrar')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -136,10 +138,10 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
 
       <View style={styles.passwordRequirements}>
         <Text style={[styles.requirementText, themeStyles.secondaryText]}>
-          • La contraseña debe tener al menos 6 caracteres
+          • {t('validation.minLength', { min: 6 })}
         </Text>
         <Text style={[styles.requirementText, themeStyles.secondaryText]}>
-          • Las contraseñas deben coincidir
+          • {t('validation.passwordMismatch')} ({t('common.confirmation', 'confirmación')})
         </Text>
       </View>
 
@@ -152,7 +154,7 @@ const Registro: React.FC<RegistroProps> = ({ onSubmit, loading, isDarkMode }) =>
         disabled={loading}
       >
         <Text style={styles.submitButtonText}>
-          {loading ? 'Creando cuenta...' : 'Crear cuenta'}
+          {loading ? t('auth.register.creatingAccount') : t('auth.register.createAccountButton')}
         </Text>
       </TouchableOpacity>
     </View>

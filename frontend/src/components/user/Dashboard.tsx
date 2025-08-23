@@ -302,7 +302,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
         ]}>
           <View style={styles.cardHeader}>
             <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
-              Mi Objetivo
+              {t("dashboard.MyObjective")}
             </Text>
             <TouchableOpacity>
               <Ionicons 
@@ -335,7 +335,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
             </View>
             
             <Text style={[styles.progressPercent, isDarkMode && styles.darkTextSecondary]}>
-              {dashboardData.objetivos.progreso}% completado
+              {dashboardData.objetivos.progreso}% {t("dashboard.ObjectivesProgress")}
             </Text>
           </View>
         </View>
@@ -348,10 +348,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
         ]}>
           <View style={styles.cardHeader}>
             <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
-              Transacciones Recientes
+              {t("dashboard.Transaction")}
             </Text>
             <TouchableOpacity>
-              <Text style={styles.seeAllText}>Ver todas</Text>
+              <Text style={styles.seeAllText}>{t("dashboard.ViewTransaction")}</Text>
             </TouchableOpacity>
           </View>
           
@@ -401,10 +401,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
         ]}>
           <View style={styles.cardHeader}>
             <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
-              Facturas Pendientes
+              {t("dashboard.billsPending")}
             </Text>
             <TouchableOpacity>
-              <Text style={styles.seeAllText}>Ver todas</Text>
+              <Text style={styles.seeAllText}>{t("dashboard.ViewBills")}</Text>
             </TouchableOpacity>
           </View>
           
@@ -420,7 +420,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
                     {factura.nombre}
                   </Text>
                   <Text style={[styles.billDue, isDarkMode && styles.darkTextSecondary]}>
-                    Vence: {new Date(factura.fechaVencimiento).toLocaleDateString()}
+                    {t("dashboard.dueBills")}: {new Date(factura.fechaVencimiento).toLocaleDateString()}
                   </Text>
                 </View>
                 
@@ -437,7 +437,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
                 color={colors.success} 
               />
               <Text style={[styles.emptyStateText, isDarkMode && styles.darkTextSecondary]}>
-                ¡No tienes facturas pendientes!
+                {t("dashboard.NoBillsPending")}
               </Text>
             </View>
           )}

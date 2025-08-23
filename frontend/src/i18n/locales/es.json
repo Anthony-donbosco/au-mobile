@@ -20,7 +20,71 @@
     "all": "Todas",
     "view": "Ver",
     "close": "Cerrar",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "continue": "Continuar",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "functionalityInDevelopment": "Funcionalidad en desarrollo",
+    "confirmation": "confirmación",
+    "billsPending": "Facturas",
+    "ViewBills": "Ver"
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de vuelta",
+      "subtitle": "Inicia sesión para continuar",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Ingresa tu contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "signInButton": "Iniciar Sesión",
+      "signingIn": "Iniciando sesión...",
+      "orSignInWith": "o inicia sesión con",
+      "googleSignIn": "Continuar con Google",
+      "noAccount": "¿No tienes una cuenta?",
+      "createAccount": "Crear una cuenta",
+      "invalidCredentials": "Credenciales inválidas. Por favor, intenta de nuevo.",
+      "authError": "Error de autenticación"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Crea tu cuenta para comenzar a administrar tus finanzas",
+      "fullName": "Nombre completo",
+      "fullNamePlaceholder": "Ingresa tu nombre completo",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Crea una contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "confirmPasswordPlaceholder": "Confirma tu contraseña",
+      "createAccountButton": "Crear Cuenta",
+      "creatingAccount": "Creando cuenta...",
+      "orRegisterWith": "o regístrate con",
+      "googleSignUp": "Continuar con Google",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Iniciar sesión",
+      "terms": "Al registrarte, aceptas nuestros",
+      "termsAndConditions": "Términos y Condiciones",
+      "and": "y",
+      "privacyPolicy": "Política de Privacidad",
+      "registrationSuccess": "Registro exitoso",
+      "accountCreated": "¡Tu cuenta ha sido creada correctamente!",
+      "registrationError": "Error de registro",
+      "accountCreationFailed": "No se pudo crear la cuenta. Por favor, intenta de nuevo.",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "passwordTooShort": "La contraseña debe tener al menos 6 caracteres"
+    },
+    "validation": {
+      "fillAllFields": "Por favor completa todos los campos",
+      "invalidEmail": "Por favor ingresa un email válido",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
+    },
+    "brand": {
+      "name": "AUREUM",
+      "tagline": "Tu gestor financiero personal"
+    }
   },
   "navigation": {
     "dashboard": "Inicio",
@@ -42,7 +106,15 @@
     "incomeWithPct": "Ingresos (+{{pct}}%)",
     "expenseWithPct": "Gastos (+{{pct}}%)",
     "overview": "Resumen General",
-    "quickActions": "Acciones Rápidas"
+    "quickActions": "Acciones Rápidas",
+    "MyObjective": "Mis objetivos",
+    "ObjectivesProgress": "Completado",
+    "Transaction": "Transacciones",
+    "ViewTransaction": "Ver más",
+    "billsPending": "Facturas Pendientes",
+    "ViewBills": "Ver más",
+    "dueBills": "Vence",
+    "NoBillsPending": "¡Excelente! No tienes facturas pendientes."
   },
   "period": {
     "thisWeek": "Esta Semana",
@@ -58,17 +130,6 @@
   },
 
   "tx": {
-    "loading": "Cargando transacciones...",
-    "title": "Historial de Transacciones",
-    "searchPlaceholder": "Buscar transacciones...",
-    "filters": {
-      "all": "Todas",
-      "income": "Ingresos",
-      "expense": "Gastos"
-    }
-  },
-
-  "transactions": {
     "loading": "Cargando transacciones...",
     "title": "Historial de Transacciones",
     "searchPlaceholder": "Buscar transacciones...",
@@ -125,7 +186,10 @@
     "status": "Estado",
     "addNew": "Nueva Factura",
     "markAsPaid": "Marcar como Pagada",
-    "noBills": "No hay facturas registradas"
+    "noBills": "No hay facturas registradas",
+    "totalPending": "Monto Total",
+    "pendingCount": "Cuentas Pendientes",
+    "overdueCount": "Vencidas"
   },
 
   "expenses": {
@@ -192,9 +256,9 @@
     "fullNamePlaceholder": "Ingresa tu nombre completo",
     "email": "Correo Electrónico",
     "emailPlaceholder": "usuario@ejemplo.com",
-    "username": "Nombre de Usuario",
-    "usernamePlaceholder": "nombredeusuario",
-    "phone": "Número de Teléfono",
+    "username": "Nombre de Usuario", 
+    "usernamePlaceholder": "Ingresa tu nombre de usuario",  
+    "phoneNumber": "Número de Teléfono",
     "phonePlaceholder": "+503 0000-0000",
     "profilePicture": "Foto de Perfil",
     "personalInfo": "Información Personal",
@@ -204,6 +268,12 @@
     "currentPassword": "Contraseña Actual",
     "newPassword": "Nueva Contraseña",
     "confirmPassword": "Confirmar Contraseña",
+    "informationWarningProfile": "Tu información personal está protegida y solo tú puedes verla y modificarla.",
+    "profilePhoto": "Tu foto de perfil",
+    "changeProfilePhoto":"Toca para cambiar",
+    "saveChanges":"Guardar Cambios",
+    "savingChanges": "Guardando...",
+    "cancelChanges": "Cancelar",
 
     "loading": "Cargando perfil...",
     "photoSection": {

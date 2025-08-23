@@ -277,7 +277,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
       ]}>
         <View style={styles.resumenItem}>
           <Text style={[styles.resumenLabel, isDarkMode && styles.darkTextSecondary]}>
-            Ingresos
+            {t("tx.summary.income")}
           </Text>
           <Text style={[styles.resumenValue, { color: colors.success }]}>
             +{formatCurrency(totalIngresos)}
@@ -285,7 +285,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
         </View>
         <View style={styles.resumenItem}>
           <Text style={[styles.resumenLabel, isDarkMode && styles.darkTextSecondary]}>
-            Gastos
+            {t("tx.summary.expense")}
           </Text>
           <Text style={[styles.resumenValue, { color: colors.error }]}>
             -{formatCurrency(totalGastos)}
@@ -293,7 +293,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
         </View>
         <View style={styles.resumenItem}>
           <Text style={[styles.resumenLabel, isDarkMode && styles.darkTextSecondary]}>
-            Balance
+            {t("tx.summary.balance")}
           </Text>
           <Text style={[
             styles.resumenValue,
