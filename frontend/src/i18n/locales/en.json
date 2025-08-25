@@ -162,7 +162,38 @@
       "amount": "Amount *",
       "description": "Description (optional)",
       "descriptionPlaceholder": "Add a description..."
+    },
+      "cancelTransaction": "Cancel",
+      "newTransaction": "New Transaction",
+      "saveTransaction": "Save"
+  },
+  "transaction": {
+    "type": "Transaction Type",
+    "name": "Name",
+    "category": "Category",
+    "amount": "Amount",
+    "description": "Description (optional)",
+    "namePlaceholder": "e.g: Monthly salary",
+    "amountPlaceholder": "0.00",
+    "descriptionPlaceholder": "Add a description...",
+    "types": {
+      "ingreso": "Income",
+      "gasto": "Expense"
     }
+  },
+  "txcategories": {
+    "Salario": "Salary",
+    "Freelance": "Freelance",
+    "Inversiones": "Investments",
+    "Regalo": "Gift",
+    "Otros": "Other",
+    "Alimentación": "Food",
+    "Transporte": "Transportation",
+    "Entretenimiento": "Entertainment",
+    "Salud": "Health",
+    "Compras": "Shopping",
+    "Servicios": "Services",
+    "Educacion": "Education"
   },
 
   "bills": {

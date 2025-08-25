@@ -145,9 +145,8 @@
     "type": "Tipo",
     "noTransactions": "No hay transacciones disponibles",
     "addNew": "Nueva Transacción",
-
-    "created": "Transacción registrada correctamente",
-    "empty": "No hay transacciones que mostrar",
+    "created": "Transacción registrada exitosamente",
+    "empty": "No hay transacciones para mostrar",
     "summary": {
       "income": "Ingresos",
       "expense": "Gastos",
@@ -164,7 +163,39 @@
       "amount": "Monto *",
       "description": "Descripción (opcional)",
       "descriptionPlaceholder": "Agregar una descripción..."
+    },
+    "cancelTransaction": "Cancelar",
+    "newTransaction": "Nueva Transacción",
+    "saveTransaction": "Guardar"
+  },
+  "transaction": {
+    "type": "Tipo de Transacción",
+    "name": "Nombre",
+    "category": "Categoría",
+    "amount": "Monto",
+    "description": "Descripción (opcional)",
+    "namePlaceholder": "Ej: Salario mensual",
+    "amountPlaceholder": "0.00",
+    "descriptionPlaceholder": "Agregar una descripción...",
+    "types": {
+      "ingreso": "Ingreso",
+      "gasto": "Gasto"
     }
+  },
+  "txcategories": {
+    "Salario": "Salario",
+    "Freelance": "Freelance",
+    "Inversiones": "Inversiones",
+    "Ventas": "Ventas",
+    "Regalo": "Regalo",
+    "Otros": "Otros",
+    "Alimentación": "Alimentación",
+    "Transporte": "Transporte",
+    "Entretenimiento": "Entretenimiento",
+    "Salud": "Salud",
+    "Compras": "Compras",
+    "Servicios": "Servicios",
+    "Educacion": "Educación"
   },
 
   "bills": {
