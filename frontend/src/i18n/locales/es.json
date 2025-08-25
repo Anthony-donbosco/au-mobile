@@ -201,6 +201,17 @@
   "bills": {
     "loading": "Cargando facturas...",
     "title": "Gestión de Facturas",
+    "newBill": "Nueva Factura",
+    "billName": "Nombre",
+    "billNamePlaceholder": "Ej: Netflix Premium",
+    "billType": "Tipo", 
+    "billTypePlaceholder": "Ej: Suscripción de streaming",
+    "amount": "Monto",
+    "dueDate": "Fecha de Vencimiento",
+    "description": "Descripción (opcional)",
+    "descriptionPlaceholder": "Agregar una descripción...",
+    "dateFormat": "Formato: AAAA-MM-DD (Ej: 2025-12-31)",
+    "invalidDate": "Fecha inválida. Verifique el formato y que sea una fecha válida.",
     "searchPlaceholder": "Buscar facturas...",
     "filters": {
       "all": "Todas",
@@ -211,7 +222,6 @@
     "created": "Factura registrada correctamente",
     "updated": "Factura actualizada correctamente",
     "deleted": "Factura eliminada correctamente",
-    "dueDate": "Fecha de Vencimiento",
     "paymentDate": "Fecha de Pago",
     "vendor": "Proveedor",
     "status": "Estado",
@@ -259,6 +269,15 @@
   "goals": {
     "loading": "Cargando objetivos...",
     "title": "Mis Objetivos Financieros",
+    "newGoal": "Nuevo Objetivo",
+    "goalName": "Nombre del Objetivo",
+    "goalNamePlaceholder": "Ej: Viaje a Europa",
+    "totalTarget": "Meta Total",
+    "deadline": "Fecha Límite",
+    "category": "Categoría",
+    "priority": "Prioridad",
+    "description": "Descripción (opcional)",
+    "descriptionPlaceholder": "Describe tu objetivo...",
     "overallProgress": "Progreso General",
     "totalSaved": "Total Ahorrado",
     "totalTargets": "Total Metas",
@@ -270,15 +289,27 @@
     "targetAmount": "Monto Objetivo",
     "currentAmount": "Monto Actual",
     "progress": "Progreso",
-    "deadline": "Fecha Límite",
-    "priority": "Prioridad",
     "addNew": "Nuevo Objetivo",
     "noGoals": "No hay objetivos definidos",
+    "categories": {
+      "viaje": "Viaje",
+      "casa": "Casa",
+      "auto": "Auto",
+      "educación": "Educación",
+      "emergencia": "Emergencia",
+      "inversión": "Inversión",
+      "otros": "Otros"
+    },
     "priorities": {
       "high": "Alta",
       "medium": "Media",
-      "low": "Baja"
-    }
+      "low": "Baja",
+      "alta": "Alta",
+      "media": "Media", 
+      "baja": "Baja"
+    },
+    "dateFormat": "Formato: Año-Mes-Día (Ej: 2027-12-31)",
+    "invalidDate": "Fecha inválida. Verifique el formato y que sea una fecha válida."
   },
 
   "profile": {

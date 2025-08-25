@@ -103,6 +103,56 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
     loadObjetivos();
   }, []);
 
+  const formatearFecha = (texto: string) => {
+  // Remover todos los caracteres que no sean números
+  const soloNumeros = texto.replace(/\D/g, '');
+  
+  // Limitar a 8 dígitos (YYYYMMDD)
+  const limitado = soloNumeros.substring(0, 8);
+  
+  // Aplicar formato YYYY-MM-DD
+  let formateado = limitado;
+    if (limitado.length >= 5) {
+      formateado = `${limitado.substring(0, 4)}-${limitado.substring(4, 6)}`;
+      if (limitado.length >= 7) {
+        formateado += `-${limitado.substring(6, 8)}`;
+      }
+    } else if (limitado.length >= 5) {
+      formateado = `${limitado.substring(0, 4)}-${limitado.substring(4)}`;
+    }
+    
+    return formateado;
+  };
+
+  // Función para validar fecha
+  const validarFecha = (fechaStr: string) => {
+    if (fechaStr.length !== 10) return false;
+    
+    const [año, mes, dia] = fechaStr.split('-').map(Number);
+    
+    // Validaciones básicas
+    if (año < 2025 || año > 2500) return false;
+    if (mes < 1 || mes > 12) return false;
+    if (dia < 1 || dia > 31) return false;
+    
+    // Validar días por mes (básico)
+    const diasPorMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const maxDias = diasPorMes[mes - 1];
+    
+    // Considerar año bisiesto para febrero
+    if (mes === 2 && ((año % 4 === 0 && año % 100 !== 0) || año % 400 === 0)) {
+      return dia <= 29;
+    }
+    
+    return dia <= maxDias;
+  };
+
+  // Handler para el cambio de fecha
+  const handleFechaChange = (texto: string) => {
+    const fechaFormateada = formatearFecha(texto);
+    setNuevoObjetivo(prev => ({ ...prev, fechaLimite: fechaFormateada }));
+  };
+
   const loadObjetivos = async () => {
     try {
       setLoading(true);
@@ -174,6 +224,25 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
     const metaTotal = parseFloat(nuevoObjetivo.metaTotal);
     if (isNaN(metaTotal) || metaTotal <= 0) {
       Alert.alert(t("common.error"), t("common.amountInvalid"));
+      return;
+    }
+
+    // Validar fecha
+    if (nuevoObjetivo.fechaLimite.length !== 10 || !validarFecha(nuevoObjetivo.fechaLimite)) {
+      Alert.alert(t("common.error"), t("goals.invalidDate"));
+      return;
+    }
+
+    // Validar que la fecha sea futura
+    const fechaLimite = new Date(nuevoObjetivo.fechaLimite);
+    const hoy = new Date();
+    if (fechaLimite <= hoy) {
+      Alert.alert(t("common.error"), "La fecha límite debe ser en el futuro");
+      return;
+    }
+
+    if (!nuevoObjetivo.nombre || !nuevoObjetivo.metaTotal || !nuevoObjetivo.fechaLimite) {
+      Alert.alert(t("common.error"), t("common.fillAllFields"));
       return;
     }
 
@@ -530,24 +599,24 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
         <SafeAreaView style={[styles.modalContainer, isDarkMode && styles.darkContainer]}>
           <View style={[styles.modalHeader, isDarkMode && styles.darkHeader]}>
             <TouchableOpacity onPress={() => setShowAddModal(false)}>
-              <Text style={styles.cancelButton}>Cancelar</Text>
+              <Text style={styles.cancelButton}>{t("common.cancel")}</Text>
             </TouchableOpacity>
             <Text style={[styles.modalTitle, isDarkMode && styles.darkText]}>
-              Nuevo Objetivo
+              {t("goals.newGoal")}
             </Text>
             <TouchableOpacity onPress={handleAddObjetivo}>
-              <Text style={styles.saveButton}>Guardar</Text>
+              <Text style={styles.saveButton}>{t("common.save")}</Text>
             </TouchableOpacity>
           </View>
 
           <ScrollView style={styles.modalContent}>
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Nombre del Objetivo *
+                {t("goals.goalName")} *
               </Text>
               <TextInput
                 style={[styles.input, isDarkMode && styles.darkInput]}
-                placeholder="Ej: Viaje a Europa"
+                placeholder={t("goals.goalNamePlaceholder")}
                 placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
                 value={nuevoObjetivo.nombre}
                 onChangeText={(text) => setNuevoObjetivo(prev => ({ ...prev, nombre: text }))}
@@ -556,7 +625,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Meta Total *
+                {t("goals.totalTarget")} *
               </Text>
               <TextInput
                 style={[styles.input, isDarkMode && styles.darkInput]}
@@ -570,20 +639,37 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Fecha Límite *
+                {t("goals.deadline")} *
               </Text>
               <TextInput
-                style={[styles.input, isDarkMode && styles.darkInput]}
-                placeholder="YYYY-MM-DD"
+                style={[
+                  styles.input, 
+                  isDarkMode && styles.darkInput,
+                  // Agregar indicador visual si la fecha es inválida
+                  nuevoObjetivo.fechaLimite.length === 10 && !validarFecha(nuevoObjetivo.fechaLimite) && styles.inputError
+                ]}
+                placeholder="2027-12-31"
                 placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
                 value={nuevoObjetivo.fechaLimite}
-                onChangeText={(text) => setNuevoObjetivo(prev => ({ ...prev, fechaLimite: text }))}
+                onChangeText={handleFechaChange}
+                keyboardType="numeric"
+                maxLength={10}
               />
+              {/* Mensaje de ayuda */}
+              <Text style={[styles.helpText, isDarkMode && styles.darkTextSecondary]}>
+                {t("goals.dateFormat")}
+              </Text>
+              {/* Mensaje de error si la fecha es inválida */}
+              {nuevoObjetivo.fechaLimite.length === 10 && !validarFecha(nuevoObjetivo.fechaLimite) && (
+                <Text style={styles.errorText}>
+                  {t("goals.invalidDate")}
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Categoría
+                {t("goals.category")}
               </Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.categoriasPicker}>
@@ -609,7 +695,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
                         isDarkMode && styles.darkText,
                         nuevoObjetivo.categoria === categoria && styles.categoriaSelectedText,
                       ]}>
-                        {categoria}
+                        {t(`goals.categories.${categoria.toLowerCase()}`)}
                       </Text>
                     </TouchableOpacity>
                   ))}
@@ -619,7 +705,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Prioridad
+                {t("goals.priority")}
               </Text>
               <View style={styles.prioridadSelector}>
                 {prioridades.map((prioridad) => (
@@ -637,7 +723,7 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
                       nuevoObjetivo.prioridad === prioridad && styles.prioridadSelectedText,
                       { color: nuevoObjetivo.prioridad === prioridad ? '#fff' : getPrioridadColor(prioridad) }
                     ]}>
-                      {prioridad}
+                      {t(`goals.priorities.${prioridad.toLowerCase()}`)}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -646,11 +732,11 @@ const Objetivos: React.FC<ObjetivosProps> = ({ onAuthChange }) => {
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Descripción (opcional)
+                {t("goals.description")}
               </Text>
               <TextInput
                 style={[styles.input, styles.textArea, isDarkMode && styles.darkInput]}
-                placeholder="Describe tu objetivo..."
+                placeholder={t("goals.descriptionPlaceholder")}
                 placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
                 value={nuevoObjetivo.descripcion}
                 onChangeText={(text) => setNuevoObjetivo(prev => ({ ...prev, descripcion: text }))}
@@ -1202,6 +1288,21 @@ const styles = StyleSheet.create({
   },
   darkTextSecondary: {
     color: colors.dark.textSecondary,
+  },
+  inputError: {
+    borderColor: colors.error,
+    borderWidth: 2,
+  },
+  helpText: {
+    fontSize: 12,
+    color: colors.light.textSecondary,
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  errorText: {
+    fontSize: 12,
+    color: colors.error,
+    marginTop: 4,
   },
 });
 

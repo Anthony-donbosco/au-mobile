@@ -17,6 +17,7 @@ import { globalStyles } from '../../styles/globalStyles';
 import { colors } from '../../styles/colors';
 import { authService } from '../../services/auth';
 import { formatCurrency, formatDateLong } from '../../utils/networkUtils';
+import { useNavigation } from '@react-navigation/native';
 
 interface DashboardData {
   saldoTotal: number;
@@ -70,6 +71,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
     transaccionesRecientes: [],
     facturasPendientes: [],
   });
+  const navigation = useNavigation();
+  const navegarAObjetivos = () => {
+    navigation.navigate('Objetivos' as never);
+  };
 
   useEffect(() => {
     loadUserData();
@@ -304,7 +309,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onAuthChange, onRoleChange }) => 
             <Text style={[styles.cardTitle, isDarkMode && styles.darkText]}>
               {t("dashboard.MyObjective")}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={navegarAObjetivos}>
               <Ionicons 
                 name="settings-outline" 
                 size={20} 

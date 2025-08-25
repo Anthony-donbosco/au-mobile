@@ -199,6 +199,17 @@
   "bills": {
     "loading": "Loading bills...",
     "title": "Bill Management",
+    "newBill": "New Bill",
+    "billName": "Name",
+    "billNamePlaceholder": "Ex: Netflix Premium",
+    "billType": "Type",
+    "billTypePlaceholder": "Ex: Streaming subscription", 
+    "amount": "Amount",
+    "dueDate": "Due Date",
+    "description": "Description (optional)",
+    "descriptionPlaceholder": "Add a description...",
+    "dateFormat": "Format: YYYY-MM-DD (Ex: 2025-12-31)",
+    "invalidDate": "Invalid date. Please check format and ensure it's a valid date.",
     "searchPlaceholder": "Search bills...",
     "filters": {
       "all": "All",
@@ -206,19 +217,18 @@
       "paid": "Paid",
       "overdue": "Overdue"
     },
-    "created": "Bill recorded successfully",
-    "updated": "Bill updated successfully",
+    "created": "Bill registered successfully",
+    "updated": "Bill updated successfully", 
     "deleted": "Bill deleted successfully",
-    "dueDate": "Due Date",
     "paymentDate": "Payment Date",
     "vendor": "Vendor",
     "status": "Status",
     "addNew": "New Bill",
     "markAsPaid": "Mark as Paid",
+    "noBills": "No bills registered",
     "totalPending": "Total Amount",
-    "pendingCount": "Pending Count",
-    "overdueCount": "Overdue",
-    "noBills": "No bills registered"
+    "pendingCount": "Pending Bills",
+    "overdueCount": "Overdue"
   },
 
   "expenses": {
@@ -257,6 +267,15 @@
   "goals": {
     "loading": "Loading goals...",
     "title": "My Financial Goals",
+    "newGoal": "New Goal",
+    "goalName": "Goal Name",
+    "goalNamePlaceholder": "Ex: Trip to Europe",
+    "totalTarget": "Total Target",
+    "deadline": "Deadline",
+    "category": "Category",
+    "priority": "Priority",
+    "description": "Description (optional)",
+    "descriptionPlaceholder": "Describe your goal...",
     "overallProgress": "Overall Progress",
     "totalSaved": "Total Saved",
     "totalTargets": "Total Targets",
@@ -268,15 +287,27 @@
     "targetAmount": "Target Amount",
     "currentAmount": "Current Amount",
     "progress": "Progress",
-    "deadline": "Deadline",
-    "priority": "Priority",
     "addNew": "New Goal",
     "noGoals": "No goals defined",
+    "categories": {
+      "viaje": "Travel",
+      "casa": "Home",
+      "auto": "Car",
+      "educación": "Education",
+      "emergencia": "Emergency",
+      "inversión": "Investment",
+      "otros": "Others"
+    },
     "priorities": {
       "high": "High",
       "medium": "Medium",
-      "low": "Low"
-    }
+      "low": "Low",
+      "alta": "High",
+      "media": "Medium",
+      "baja": "Low"
+    },
+    "dateFormat": "Format: YYYY-MM-DD (Ex: 2027-12-31)",
+    "invalidDate": "Invalid date. Please check format and ensure it's a valid date."
   },
 
   "profile": {

@@ -227,7 +227,7 @@ const Transacciones: React.FC<TransaccionesProps> = ({ onAuthChange }) => {
 
       {/* Filtros y búsqueda */}
       <View style={[styles.filtersContainer, { paddingHorizontal: wp(4) }]}>
-        <View style={styles.searchContainer}>
+        <View style={[styles.searchContainer, isDarkMode && styles.darkSearchContainer]}>
           <Ionicons 
             name="search" 
             size={20} 
@@ -672,6 +672,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: colors.light.text,
+  },
+  darkSearchContainer: {
+    backgroundColor: colors.dark.surface,
   },
   transaccionCategoria: {
     fontSize: 12,

@@ -59,6 +59,56 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
     loadFacturas();
   }, []);
 
+  const formatearFecha = (texto: string) => {
+  // Remover todos los caracteres que no sean números
+  const soloNumeros = texto.replace(/\D/g, '');
+  
+  // Limitar a 8 dígitos (YYYYMMDD)
+  const limitado = soloNumeros.substring(0, 8);
+  
+  // Aplicar formato YYYY-MM-DD
+  let formateado = limitado;
+  if (limitado.length >= 5) {
+      formateado = `${limitado.substring(0, 4)}-${limitado.substring(4, 6)}`;
+      if (limitado.length >= 7) {
+        formateado += `-${limitado.substring(6, 8)}`;
+      }
+    } else if (limitado.length >= 5) {
+      formateado = `${limitado.substring(0, 4)}-${limitado.substring(4)}`;
+    }
+    
+    return formateado;
+  };
+
+  // Función para validar fecha
+  const validarFecha = (fechaStr: string) => {
+    if (fechaStr.length !== 10) return false;
+    
+    const [año, mes, dia] = fechaStr.split('-').map(Number);
+    
+    // Validaciones básicas
+    if (año < 2025 || año > 2500) return false;
+    if (mes < 1 || mes > 12) return false;
+    if (dia < 1 || dia > 31) return false;
+    
+    // Validar días por mes (básico)
+    const diasPorMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const maxDias = diasPorMes[mes - 1];
+    
+    // Considerar año bisiesto para febrero
+    if (mes === 2 && ((año % 4 === 0 && año % 100 !== 0) || año % 400 === 0)) {
+      return dia <= 29;
+    }
+    
+    return dia <= maxDias;
+  };
+
+  // Handler para el cambio de fecha
+  const handleFechaVencimientoChange = (texto: string) => {
+    const fechaFormateada = formatearFecha(texto);
+    setNuevaFactura(prev => ({ ...prev, fechaVencimiento: fechaFormateada }));
+};
+
   const loadFacturas = async () => {
     try {
       setLoading(true);
@@ -141,6 +191,11 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
     const monto = parseFloat(nuevaFactura.monto);
     if (isNaN(monto) || monto <= 0) {
       Alert.alert(t("common.error"), t("common.amountInvalid"));
+      return;
+    }
+
+    if (nuevaFactura.fechaVencimiento.length !== 10 || !validarFecha(nuevaFactura.fechaVencimiento)) {
+      Alert.alert(t("common.error"), t("bills.invalidDate"));
       return;
     }
 
@@ -481,24 +536,24 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
         <SafeAreaView style={[styles.modalContainer, isDarkMode && styles.darkContainer]}>
           <View style={[styles.modalHeader, isDarkMode && styles.darkHeader]}>
             <TouchableOpacity onPress={() => setShowAddModal(false)}>
-              <Text style={styles.cancelButton}>Cancelar</Text>
+              <Text style={styles.cancelButton}>{t("common.cancel")}</Text>
             </TouchableOpacity>
             <Text style={[styles.modalTitle, isDarkMode && styles.darkText]}>
-              Nueva Factura
+              {t("bills.newBill")}
             </Text>
             <TouchableOpacity onPress={handleAddFactura}>
-              <Text style={styles.saveButton}>Guardar</Text>
+              <Text style={styles.saveButton}>{t("common.save")}</Text>
             </TouchableOpacity>
           </View>
 
           <ScrollView style={styles.modalContent}>
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Nombre *
+                {t("bills.billName")} *
               </Text>
               <TextInput
                 style={[styles.input, isDarkMode && styles.darkInput]}
-                placeholder="Ej: Netflix Premium"
+                placeholder={t("bills.billNamePlaceholder")}
                 placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
                 value={nuevaFactura.nombre}
                 onChangeText={(text) => setNuevaFactura(prev => ({ ...prev, nombre: text }))}
@@ -507,11 +562,11 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Tipo *
+                {t("bills.billType")} *
               </Text>
               <TextInput
                 style={[styles.input, isDarkMode && styles.darkInput]}
-                placeholder="Ej: Suscripción de streaming"
+                placeholder={t("bills.billTypePlaceholder")}
                 placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
                 value={nuevaFactura.tipo}
                 onChangeText={(text) => setNuevaFactura(prev => ({ ...prev, tipo: text }))}
@@ -520,7 +575,7 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Monto *
+                {t("bills.amount")} *
               </Text>
               <TextInput
                 style={[styles.input, isDarkMode && styles.darkInput]}
@@ -534,24 +589,39 @@ const Facturas: React.FC<FacturasProps> = ({ onAuthChange }) => {
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Fecha de Vencimiento *
+                {t("bills.dueDate")} *
               </Text>
               <TextInput
-                style={[styles.input, isDarkMode && styles.darkInput]}
-                placeholder="YYYY-MM-DD"
+                style={[
+                  styles.input, 
+                  isDarkMode && styles.darkInput,
+                  // Agregar indicador visual si la fecha es inválida
+                  nuevaFactura.fechaVencimiento.length === 10 && !validarFecha(nuevaFactura.fechaVencimiento) && styles.inputError
+                ]}
+                placeholder="2025-12-31"
                 placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
                 value={nuevaFactura.fechaVencimiento}
-                onChangeText={(text) => setNuevaFactura(prev => ({ ...prev, fechaVencimiento: text }))}
+                onChangeText={handleFechaVencimientoChange}
+                keyboardType="numeric"
+                maxLength={10}
               />
+              <Text style={[styles.helpText, isDarkMode && styles.darkTextSecondary]}>
+                {t("bills.dateFormat")}
+              </Text>
+              {nuevaFactura.fechaVencimiento.length === 10 && !validarFecha(nuevaFactura.fechaVencimiento) && (
+                <Text style={styles.errorText}>
+                  {t("bills.invalidDate")}
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={[styles.inputLabel, isDarkMode && styles.darkTextSecondary]}>
-                Descripción (opcional)
+                {t("bills.description")}
               </Text>
               <TextInput
                 style={[styles.input, styles.textArea, isDarkMode && styles.darkInput]}
-                placeholder="Agregar una descripción..."
+                placeholder={t("bills.descriptionPlaceholder")}
                 placeholderTextColor={isDarkMode ? colors.dark.textTertiary : colors.light.textTertiary}
                 value={nuevaFactura.descripcion}
                 onChangeText={(text) => setNuevaFactura(prev => ({ ...prev, descripcion: text }))}
@@ -900,6 +970,21 @@ const styles = StyleSheet.create({
   },
   darkTextSecondary: {
     color: colors.dark.textSecondary,
+  },
+  inputError: {
+    borderColor: colors.error,
+    borderWidth: 2,
+  },
+  helpText: {
+    fontSize: 12,
+    color: colors.light.textSecondary,
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  errorText: {
+    fontSize: 12,
+    color: colors.error,
+    marginTop: 4,
   },
 });
 
